@@ -1,10 +1,32 @@
 import { describe, expect, it } from "vitest"
 import { buildArtifact, checkInvariants, type EvidenceArtifact } from "../../src/core/accuracy/evidence.ts"
+import type { LabelSet } from "../../src/core/accuracy/labels.ts"
 import { driftLabels, driftSnapshot } from "../support/drift-fixture.ts"
 import { mutableClone } from "../support/clone.ts"
 
+const testLabels: LabelSet = {
+  ...driftLabels,
+  cases: [
+    ...driftLabels.cases,
+    {
+      page: "Product",
+      path: "Button / Label",
+      field: "typography",
+      category: "typography-drift",
+      why: "component typography is unstyled",
+    },
+    {
+      page: "Product",
+      path: "Button drifted / Label",
+      field: "typography",
+      category: "typography-drift",
+      why: "instance typography is unstyled and changed",
+    },
+  ],
+}
+
 const artifact = buildArtifact([
-  { name: "hand-authored", snapshotSha256: "0".repeat(64), snapshot: driftSnapshot, labels: driftLabels },
+  { name: "hand-authored", snapshotSha256: "0".repeat(64), snapshot: driftSnapshot, labels: testLabels },
 ])
 
 const damaged = (edit: (copy: EvidenceArtifact) => void): EvidenceArtifact => {
@@ -21,14 +43,16 @@ describe("buildArtifact", () => {
     expect(artifact.fixtures[0]?.results.map((result) => result.detector).sort()).toEqual([
       "blunt:override-drift",
       "blunt:token-drift",
+      "blunt:typography-drift",
       "override-drift",
       "token-drift",
+      "typography-drift",
     ])
   })
 
   it("produces byte identical output on a second run", () => {
     const again = buildArtifact([
-      { name: "hand-authored", snapshotSha256: "0".repeat(64), snapshot: driftSnapshot, labels: driftLabels },
+      { name: "hand-authored", snapshotSha256: "0".repeat(64), snapshot: driftSnapshot, labels: testLabels },
     ])
     expect(JSON.stringify(again)).toBe(JSON.stringify(artifact))
   })

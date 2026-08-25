@@ -1,11 +1,13 @@
 import { DetachmentDetector } from "../detect/detachment.ts"
 import { OverrideDriftDetector } from "../detect/override-drift.ts"
 import { TokenDriftDetector } from "../detect/token-drift.ts"
+import { TypographyDriftDetector } from "../detect/typography-drift.ts"
 import type { Detector } from "../detect/detector.ts"
 import type { Category } from "../model/finding.ts"
 import type { DocumentSnapshot } from "../model/snapshot.ts"
 import { WEIGHT_MODEL_VERSION } from "../score/weights.ts"
 import { BluntControlDetector, BluntTokenControlDetector } from "./blunt-control.ts"
+import { BluntTypographyControlDetector } from "./blunt-typography-control.ts"
 import { expectedFindingIds, type LabelSet } from "./labels.ts"
 import { scoreAgainstLabels, type AccuracyResult } from "./score.ts"
 
@@ -32,6 +34,11 @@ const PAIRINGS: readonly Pairing[] = [
     category: "token-drift",
     detector: new TokenDriftDetector(),
     control: new BluntTokenControlDetector(),
+  },
+  {
+    category: "typography-drift",
+    detector: new TypographyDriftDetector(),
+    control: new BluntTypographyControlDetector(),
   },
 ]
 
