@@ -3,6 +3,7 @@ import { detectAll } from "../detect/registry.ts"
 import type { Detector } from "../detect/detector.ts"
 import type { Category, FieldClass, Finding } from "../model/finding.ts"
 import type { CaptureMeta, DocumentSnapshot } from "../model/snapshot.ts"
+import { scoreFindings, type DriftScore } from "../score/score.ts"
 import { walkAll } from "../util/tree.ts"
 import { summarise, type SnapshotSummary } from "./summary.ts"
 
@@ -36,6 +37,7 @@ export interface AuditReport {
   readonly summary: SnapshotSummary
   readonly counts: AuditCounts
   readonly rates: AuditRates
+  readonly score: DriftScore
   readonly findings: readonly Finding[]
 }
 
@@ -49,6 +51,7 @@ export function audit(snapshot: DocumentSnapshot, detectors?: readonly Detector[
     summary: summarise(snapshot),
     counts: count(findings),
     rates: rates(snapshot, findings),
+    score: scoreFindings(findings),
     findings,
   }
 }
