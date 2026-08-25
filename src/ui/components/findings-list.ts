@@ -2,6 +2,15 @@ import type { Finding } from "../../core/model/finding.ts"
 import { h } from "./dom.ts"
 
 function values(finding: Finding): HTMLElement {
+  if (finding.category === "token-drift") {
+    return h(
+      "p",
+      {},
+      finding.actual ?? "",
+      h("span", { class: "muted" }, " is not a token"),
+      finding.blastRadius > 1 ? h("span", { class: "muted" }, `, reaching ${finding.blastRadius} instances`) : "",
+    )
+  }
   if (finding.expected === null && finding.actual === null) {
     return h("p", { class: "muted" }, finding.note ?? "no value recorded")
   }

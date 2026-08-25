@@ -62,8 +62,9 @@ function renderResult(message: Extract<PluginMessage, { type: "scan-complete" }>
     h(
       "p",
       { class: "muted" },
-      `${report.counts.total} findings across ${report.rates.instancesDrifted} of ` +
-        `${report.rates.instancesConsidered} instances, ${(report.rates.overrideRate * 100).toFixed(1)}% drifted.`,
+      `${report.counts.total} findings. ` +
+        `${report.rates.instancesDrifted} of ${report.rates.instancesConsidered} instances drifted, ` +
+        `${(report.rates.tokenCoverage.tokenised)} of ${report.rates.tokenCoverage.bindable} paints tokenised.`,
     ),
     h(
       "div",

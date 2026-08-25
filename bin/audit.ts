@@ -12,6 +12,10 @@ const USAGE = "usage: npm run audit <snapshot.json> [--json] [--limit N]"
 
 function describe(finding: Finding): string {
   const where = `${finding.location.pageName} / ${finding.location.path}`
+  if (finding.category === "token-drift") {
+    const reach = finding.blastRadius > 1 ? `, reaching ${finding.blastRadius} instances` : ""
+    return `  ${finding.field}  ${where}\n      ${finding.actual} is not a token${reach}`
+  }
   if (finding.expected === null && finding.actual === null) return `  ${finding.field}  ${where}`
   if (finding.expected === null) return `  ${finding.field}  ${where}\n      is ${finding.actual}, baseline unknown`
   return `  ${finding.field}  ${where}\n      was ${finding.expected}, is ${finding.actual}`
@@ -48,12 +52,20 @@ function main(argv: readonly string[]): number {
       `${summary.instances} instances`,
   )
   console.log(`  ${summary.styles} styles (${summary.remoteStyles} published), ${summary.variables} variables`)
+  const coverage = rates.tokenCoverage
   console.log("")
-  console.log(`${counts.total} findings across ${rates.instancesDrifted} of ${rates.instancesConsidered} instances`)
-  console.log(`  drift rate ${(rates.overrideRate * 100).toFixed(1)}%`)
+  console.log(`${counts.total} findings`)
+  console.log(
+    `  ${rates.instancesDrifted} of ${rates.instancesConsidered} instances have drifted, ` +
+      `${(rates.overrideRate * 100).toFixed(1)}%`,
+  )
+  console.log(
+    `  ${coverage.tokenised} of ${coverage.bindable} bindable paints resolve to a token, ` +
+      `${(coverage.coverage * 100).toFixed(1)}%`,
+  )
 
-  for (const [fieldClass, total] of Object.entries(counts.byFieldClass).sort()) {
-    console.log(`  ${fieldClass}: ${total}`)
+  for (const [category, total] of Object.entries(counts.byCategory).sort()) {
+    console.log(`  ${category}: ${total}`)
   }
 
   if (counts.withoutBaseline > 0) {
