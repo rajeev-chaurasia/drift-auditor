@@ -1,0 +1,26 @@
+{
+  "name": "drift-auditor",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Audits a Figma file for instance and token drift, with findings that recompute offline",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "build": "node esbuild.config.mjs",
+    "watch": "node esbuild.config.mjs --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "check:prose": "node script/check-prose.ts",
+    "check:layering": "node script/check-layering.ts",
+    "check": "npm run typecheck && npm run check:prose && npm run check:layering && npm test"
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.135.0",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.11"
+  }
+}
