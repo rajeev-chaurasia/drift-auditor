@@ -29,6 +29,11 @@ export const IGNORED_FIELDS: ReadonlySet<string> = new Set([
   "componentProperties",
   "componentPropertyDefinitions",
   "componentPropertyReferences",
+  // Renaming an instance, or a layer inside one, is ordinary practice and
+  // changes nothing anybody can see. Reporting it would put a finding against
+  // every instance somebody bothered to name, which is most of them in a file
+  // worth auditing.
+  "name",
   "relativeTransform",
   "x",
   "y",
@@ -128,8 +133,6 @@ const FIELDS: Readonly<Record<string, FieldSpec>> = {
   itemSpacing: { fieldClass: "layout", read: scalar((node) => node.props.layout?.itemSpacing) },
   primaryAxisAlignItems: { fieldClass: "layout", read: scalar((node) => node.props.layout?.primaryAxisAlign) },
   counterAxisAlignItems: { fieldClass: "layout", read: scalar((node) => node.props.layout?.counterAxisAlign) },
-
-  name: { fieldClass: "other", read: scalar((node) => node.name) },
 }
 
 const UNMODELLED: FieldSpec = { fieldClass: "other" }

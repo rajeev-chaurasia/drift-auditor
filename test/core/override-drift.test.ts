@@ -199,3 +199,15 @@ describe("OverrideDriftDetector", () => {
     expect(detector.detect(snapshot)).toEqual([])
   })
 })
+
+describe("renaming", () => {
+  it("says nothing about a renamed instance, which changes nothing anybody can see", () => {
+    const snapshot = pair({
+      componentChild: { id: "main-label", type: "TEXT", name: "Label" },
+      instanceChild: { id: "use-label", type: "TEXT", name: "Price" },
+      overrides: [{ nodeId: "use-label", fields: ["name"] }],
+    })
+
+    expect(detector.detect(snapshot)).toEqual([])
+  })
+})
