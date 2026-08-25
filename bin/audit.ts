@@ -13,6 +13,9 @@ const USAGE = "usage: npm run audit <snapshot.json> [--json] [--csv] [--limit N]
 
 function describe(finding: Finding): string {
   const where = `${finding.location.pageName} / ${finding.location.path}`
+  if (finding.category === "detachment") {
+    return `  ${finding.field}  ${where}\n      looks like ${finding.expected}, inferred and can be wrong`
+  }
   if (finding.category === "token-drift") {
     const reach = finding.blastRadius > 1 ? `, reaching ${finding.blastRadius} instances` : ""
     return `  ${finding.field}  ${where}\n      ${finding.actual} is not a token${reach}`
@@ -73,7 +76,9 @@ function main(argv: readonly string[]): number {
   console.log(`  drift score ${report.score.total}, weight model ${report.score.modelVersion}`)
 
   for (const [category, total] of Object.entries(counts.byCategory).sort()) {
-    console.log(`  ${category}: ${total} findings, ${report.score.byCategory[category] ?? 0} severity`)
+    const weight = report.score.byCategory[category] ?? 0
+    const note = weight === 0 && total > 0 ? "inferred, worth nothing in the score" : `${weight} severity`
+    console.log(`  ${category}: ${total} findings, ${note}`)
   }
 
   if (counts.withoutBaseline > 0) {

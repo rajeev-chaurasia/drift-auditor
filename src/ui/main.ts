@@ -1,18 +1,20 @@
 import type { DocumentSnapshot } from "../core/model/snapshot.ts"
 import type { AuditReport } from "../core/report/audit.ts"
-import type { PluginMessage, UiMessage } from "../figma/messages.ts"
 import { toCsv } from "../core/report/csv.ts"
+import type { PluginMessage, UiMessage } from "../figma/messages.ts"
 import { h, replace } from "./components/dom.ts"
-import { findingsList } from "./components/findings-list.ts"
+import { filterBar, findingsList, type Filter } from "./components/findings-list.ts"
+import { stats } from "./components/stats.ts"
 import { coverageNote, summaryTable } from "./components/summary-table.ts"
 
-const SHOWN = 50
+const SHOWN = 60
 
 const app = document.getElementById("app") as HTMLElement
 
 const post = (message: UiMessage): void => parent.postMessage({ pluginMessage: message }, "*")
 
 let recorded: { report: AuditReport; snapshot: DocumentSnapshot } | null = null
+let filter: Filter = "all"
 
 function scanButton(label: string, disabled: boolean): HTMLButtonElement {
   const button = h("button", disabled ? { disabled: "true" } : {}, label)
@@ -40,7 +42,7 @@ function renderIdle(): void {
   replace(
     app,
     h("h1", {}, "Drift Auditor"),
-    h("p", { class: "muted" }, "Reads this file into a snapshot, then reports how far its instances have drifted."),
+    h("p", { class: "muted" }, "Reads this file into a snapshot, then reports how far it has drifted from itself."),
     h("div", { class: "row" }, scanButton("Scan file", false)),
   )
 }
@@ -54,32 +56,30 @@ function renderScanning(nodesVisited: number): void {
   )
 }
 
-function renderResult(message: Extract<PluginMessage, { type: "scan-complete" }>): void {
-  const { report, snapshot } = message
-  recorded = { report, snapshot }
+function renderResult(): void {
+  if (!recorded) return
+  const { report, snapshot } = recorded
   const file = report.file
 
   replace(
     app,
     h("h1", {}, file),
-    h(
-      "p",
-      { class: "muted" },
-      `${report.counts.total} findings. ` +
-        `${report.rates.instancesDrifted} of ${report.rates.instancesConsidered} instances drifted, ` +
-        `${(report.rates.tokenCoverage.tokenised)} of ${report.rates.tokenCoverage.bindable} paints tokenised.`,
-    ),
+    stats(report),
     h(
       "div",
       { class: "row" },
       scanButton("Scan again", false),
-      saveButton("Save findings", `${file}.findings.json`, () => recorded?.report),
+      saveButton("Save findings", `${file}.findings.json`, () => report),
       saveButton("Save CSV", `${file}.findings.csv`, () => toCsv(report.findings), "text/csv"),
-      saveButton("Save snapshot", `${file}.snapshot.json`, () => recorded?.snapshot),
+      saveButton("Save snapshot", `${file}.snapshot.json`, () => snapshot),
     ),
+    filterBar(report.findings, filter, (next) => {
+      filter = next
+      renderResult()
+    }),
+    h("div", { class: "scroll" }, findingsList(report.findings, filter, SHOWN)),
     summaryTable(report.summary),
     coverageNote(report.summary),
-    h("div", { class: "scroll" }, findingsList(report.findings, SHOWN)),
   )
 }
 
@@ -104,7 +104,9 @@ window.onmessage = (event: MessageEvent) => {
     case "scan-progress":
       return renderScanning(message.nodesVisited)
     case "scan-complete":
-      return renderResult(message)
+      recorded = { report: message.report, snapshot: message.snapshot }
+      filter = "all"
+      return renderResult()
     case "scan-failed":
       return renderFailure(message.message)
   }
