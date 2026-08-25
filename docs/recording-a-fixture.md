@@ -29,9 +29,14 @@ knowing that going in.
 
 Publishing a library needs a paid plan. On the free Starter plan every
 component, style and variable in your file is local, so `remote` is never true,
-and two rules go unmeasured: an instance of a library component, and a layer
-using a published library style. `docs/known-misses.md` records this. Nothing
-in the build works around it, and no plugin can.
+and three rules go unmeasured: an instance of a library component, a layer
+using a published paint style, and a text layer using a published text style.
+`docs/known-misses.md` records this. Nothing in the build works around it, and
+no plugin can.
+
+For typography this bites hardest, because binding a variable to every
+typographic property becomes the only route to compliance the fixture can
+demonstrate. `Bound heading` is that case.
 
 Everything else gets measured.
 
@@ -81,6 +86,12 @@ What it builds, and what it expects the auditor to say:
 | `Card locked`, a child locked | **no**, editor state |
 | `Button configured`, text property set | **no**, this is correct use |
 | `Button untouched` | no |
+| `Card / Title` and `/ Body`, type set by hand | yes, typography drift |
+| `Button / Label`, the same | yes |
+| `Card drifted / Body`, type size changed | yes, twice: an override and untokenised type |
+| `Bound heading`, every property bound to a variable | **no** |
+| `Half bound heading`, only the size bound | yes, with a note naming the loose properties |
+| `Styled heading`, local text style | yes, an unpublished style is not a token |
 | `Tokenised swatch`, variable bound | no |
 | `Scratch swatch`, local style | yes, an unpublished style is not a token |
 | `Raw swatch`, colour typed in | yes |

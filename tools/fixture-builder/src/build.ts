@@ -51,12 +51,18 @@ export async function buildFixture(): Promise<BuildResult> {
   scratch.name = "Scratch/Green"
   scratch.paints = [solid(SCRATCH_GREEN)]
 
+  const bodyStyle = figma.createTextStyle()
+  bodyStyle.name = "Type/Body"
+  bodyStyle.fontName = FONT
+  bodyStyle.fontSize = 14
+
   const card = buildCard(components, brand, recorder)
   const button = buildButton(components, brand, recorder)
 
   await buildCardUsages(usage, card, recorder)
   await buildButtonUsages(usage, button, recorder)
   await buildSwatches(usage, brand, scratch, recorder)
+  await buildTypography(usage, collection, bodyStyle, recorder)
   await buildDetachment(usage, card, recorder)
 
   figma.currentPage = usage
@@ -111,6 +117,15 @@ function buildCard(page: PageNode, brand: Variable, recorder: Recorder): Compone
     category: "token-drift",
     why: "the component types its background white instead of binding a variable, and every instance inherits it",
   })
+  for (const layer of ["Title", "Body"]) {
+    recorder.expect({
+      page: COMPONENTS_PAGE,
+      path: `Card / ${layer}`,
+      field: "typography",
+      category: "typography-drift",
+      why: "type set by hand in the component, following no style and no variable",
+    })
+  }
 
   return card
 }
@@ -141,7 +156,14 @@ function buildButton(page: PageNode, brand: Variable, recorder: Recorder): Butto
   const propertyId = node.addComponentProperty("Label", "TEXT", "Submit")
   text.componentPropertyReferences = { characters: propertyId }
 
-  void recorder
+  recorder.expect({
+    page: COMPONENTS_PAGE,
+    path: "Button / Label",
+    field: "typography",
+    category: "typography-drift",
+    why: "the same, in the other component",
+  })
+
   return { node, propertyId }
 }
 
@@ -188,6 +210,13 @@ async function buildCardUsages(page: PageNode, card: ComponentNode, recorder: Re
       field: "fontSize",
       category: "override-drift",
       why: "the body type size was nudged away from the component",
+    })
+    recorder.expect({
+      page: USAGE_PAGE,
+      path: "Card drifted / Body",
+      field: "typography",
+      category: "typography-drift",
+      why: "and once it differs from the component, the instance owns the untokenised type itself",
     })
     recorder.expect({
       page: USAGE_PAGE,
@@ -308,6 +337,81 @@ async function buildSwatches(
   })
 }
 
+/**
+ * Typography, where a free Figma plan bites.
+ *
+ * Publishing a library needs a paid plan, so no style in this file can ever be
+ * remote and the published-style path to compliance cannot be exercised here.
+ * Binding a variable to every typographic property is the only compliant route
+ * left, which is what the first case does.
+ */
+async function buildTypography(
+  page: PageNode,
+  collection: VariableCollection,
+  bodyStyle: TextStyle,
+  recorder: Recorder,
+): Promise<void> {
+  const mode = collection.modes[0]!.modeId
+
+  const string = (name: string, value: string): Variable => {
+    const variable = figma.variables.createVariable(name, collection, "STRING")
+    variable.setValueForMode(mode, value)
+    return variable
+  }
+
+  const number = (name: string, value: number): Variable => {
+    const variable = figma.variables.createVariable(name, collection, "FLOAT")
+    variable.setValueForMode(mode, value)
+    return variable
+  }
+
+  const place = (node: SceneNode, y: number): void => {
+    page.appendChild(node)
+    node.x = 640
+    node.y = y
+  }
+
+  // No label. Every property follows a variable, which is the only way to be
+  // tokenised in a file that cannot publish a library.
+  await recorder.step("Bound heading", () => {
+    const node = label("Bound heading", "Bound heading", 24)
+    place(node, 320)
+    node.setBoundVariable("fontFamily", string("type/family", FONT.family))
+    node.setBoundVariable("fontStyle", string("type/style", FONT.style))
+    node.setBoundVariable("fontSize", number("type/heading-size", 24))
+    node.setBoundVariable("lineHeight", number("type/heading-line", 32))
+    node.setBoundVariable("letterSpacing", number("type/heading-tracking", 0))
+  })
+
+  await recorder.step("Half bound heading", () => {
+    const node = label("Half bound heading", "Half bound", 24)
+    place(node, 380)
+    node.setBoundVariable("fontSize", number("type/subhead-size", 24))
+
+    recorder.expect({
+      page: USAGE_PAGE,
+      path: "Half bound heading",
+      field: "typography",
+      category: "typography-drift",
+      why: "one property follows a variable and the rest were typed in, which is not tokenised type",
+    })
+  })
+
+  await recorder.step("Styled heading", async () => {
+    const node = label("Styled heading", "Styled", 14)
+    place(node, 440)
+    await node.setTextStyleIdAsync(bodyStyle.id)
+
+    recorder.expect({
+      page: USAGE_PAGE,
+      path: "Styled heading",
+      field: "typography",
+      category: "typography-drift",
+      why: "it follows a local text style, and a style nobody published is not a token",
+    })
+  })
+}
+
 async function buildDetachment(page: PageNode, card: ComponentNode, recorder: Recorder): Promise<void> {
   /** Wrappers carry no fill, so they add no paint of their own for the token detector to find. */
   const section = (name: string, y: number): FrameNode => {
@@ -344,6 +448,15 @@ async function buildDetachment(page: PageNode, card: ComponentNode, recorder: Re
       category: "token-drift",
       why: "detaching froze the component's hardcoded white into a frame of its own",
     })
+    for (const layer of ["Title", "Body"]) {
+      recorder.expect({
+        page: USAGE_PAGE,
+        path: `Detached untouched / Card / ${layer}`,
+        field: "typography",
+        category: "typography-drift",
+        why: "detaching froze the component's untokenised type here too, and no component owns it now",
+      })
+    }
   })
 
   // Structurally changed, so its shape no longer matches. Whether the name
@@ -367,6 +480,15 @@ async function buildDetachment(page: PageNode, card: ComponentNode, recorder: Re
       category: "token-drift",
       why: "the same frozen white, in a frame that was then edited",
     })
+    for (const layer of ["Title", "Body", "Footnote"]) {
+      recorder.expect({
+        page: USAGE_PAGE,
+        path: `Detached edited / Card / ${layer}`,
+        field: "typography",
+        category: "typography-drift",
+        why: "frozen untokenised type, including the layer that was added afterwards",
+      })
+    }
   })
 
   // No detachment label. A frame that borrowed a name and nothing else is the
