@@ -1,4 +1,4 @@
-import type { PaintRef } from "../model/snapshot"
+import type { PaintRef } from "../model/snapshot.ts"
 
 export interface Rgb {
   readonly r: number

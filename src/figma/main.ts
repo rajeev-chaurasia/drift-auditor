@@ -1,6 +1,6 @@
-import { summarise } from "../core/report/summary"
-import type { PluginMessage, UiMessage } from "./messages"
-import { readDocument } from "./snapshot/read-document"
+import { summarise } from "../core/report/summary.ts"
+import type { PluginMessage, UiMessage } from "./messages.ts"
+import { readDocument } from "./snapshot/read-document.ts"
 
 const PRODUCER = "drift-auditor 0.1.0"
 

@@ -1,4 +1,4 @@
-import { toHex } from "../../core/util/paint"
+import { toHex } from "../../core/util/paint.ts"
 import type {
   Incompleteness,
   LayoutProps,
@@ -9,9 +9,9 @@ import type {
   StyleBindings,
   Typography,
   VariableId,
-} from "../../core/model/snapshot"
-import type { StyleResolver } from "./resolve-styles"
-import type { VariableResolver } from "./resolve-variables"
+} from "../../core/model/snapshot.ts"
+import type { StyleResolver } from "./resolve-styles.ts"
+import type { VariableResolver } from "./resolve-variables.ts"
 
 export interface ReadContext {
   readonly styles: StyleResolver

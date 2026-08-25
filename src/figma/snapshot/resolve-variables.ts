@@ -1,4 +1,4 @@
-import type { VariableId, VariableRecord } from "../../core/model/snapshot"
+import type { VariableId, VariableRecord } from "../../core/model/snapshot.ts"
 
 export class VariableResolver {
   private readonly records = new Map<VariableId, VariableRecord>()

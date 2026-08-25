@@ -1,4 +1,4 @@
-import type { StyleId, StyleRecord } from "../../core/model/snapshot"
+import type { StyleId, StyleRecord } from "../../core/model/snapshot.ts"
 
 const STYLE_TYPES: Readonly<Record<string, StyleRecord["type"]>> = {
   PAINT: "PAINT",

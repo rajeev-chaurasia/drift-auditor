@@ -1,5 +1,5 @@
-import type { DocumentSnapshot, NodeType } from "../model/snapshot"
-import { walkAll } from "../util/tree"
+import type { DocumentSnapshot, NodeType } from "../model/snapshot.ts"
+import { walkAll } from "../util/tree.ts"
 
 export interface SnapshotSummary {
   readonly pages: number

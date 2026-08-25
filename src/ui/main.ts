@@ -1,7 +1,7 @@
-import type { DocumentSnapshot } from "../core/model/snapshot"
-import type { PluginMessage, UiMessage } from "../figma/messages"
-import { h, replace } from "./components/dom"
-import { coverageNote, summaryTable } from "./components/summary-table"
+import type { DocumentSnapshot } from "../core/model/snapshot.ts"
+import type { PluginMessage, UiMessage } from "../figma/messages.ts"
+import { h, replace } from "./components/dom.ts"
+import { coverageNote, summaryTable } from "./components/summary-table.ts"
 
 const app = document.getElementById("app") as HTMLElement
 

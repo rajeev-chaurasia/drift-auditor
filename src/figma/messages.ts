@@ -1,5 +1,5 @@
-import type { DocumentSnapshot } from "../core/model/snapshot"
-import type { SnapshotSummary } from "../core/report/summary"
+import type { DocumentSnapshot } from "../core/model/snapshot.ts"
+import type { SnapshotSummary } from "../core/report/summary.ts"
 
 // The only channel between the sandbox and the panel. Both sides import these
 // types, so a message shape cannot drift between them.

@@ -1,4 +1,4 @@
-import type { DocumentSnapshot, NodeId, SnapshotNode } from "../model/snapshot"
+import type { DocumentSnapshot, NodeId, SnapshotNode } from "../model/snapshot.ts"
 
 export function getNode(snapshot: DocumentSnapshot, id: NodeId): SnapshotNode | null {
   return snapshot.nodes[id] ?? null

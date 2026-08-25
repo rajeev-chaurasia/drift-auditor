@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
-import { indexPath, namePath, resolveIndexPath, walk, walkAll } from "../../src/core/util/tree"
-import { buildSnapshot } from "../support/build-snapshot"
+import { indexPath, namePath, resolveIndexPath, walk, walkAll } from "../../src/core/util/tree.ts"
+import { buildSnapshot } from "../support/build-snapshot.ts"
 
 const snapshot = buildSnapshot({
   pages: [

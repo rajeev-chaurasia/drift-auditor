@@ -8,10 +8,10 @@ import {
   type NodeId,
   type OverrideRecord,
   type SnapshotNode,
-} from "../../core/model/snapshot"
-import { readNode, type ReadContext } from "./read-node"
-import { StyleResolver } from "./resolve-styles"
-import { VariableResolver } from "./resolve-variables"
+} from "../../core/model/snapshot.ts"
+import { readNode, type ReadContext } from "./read-node.ts"
+import { StyleResolver } from "./resolve-styles.ts"
+import { VariableResolver } from "./resolve-variables.ts"
 
 export interface ReadOptions {
   readonly producer: string

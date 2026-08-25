@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
-import { countOfType, summarise } from "../../src/core/report/summary"
-import { buildSnapshot } from "../support/build-snapshot"
+import { countOfType, summarise } from "../../src/core/report/summary.ts"
+import { buildSnapshot } from "../support/build-snapshot.ts"
 
 const snapshot = buildSnapshot({
   pages: [

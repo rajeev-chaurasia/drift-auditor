@@ -7,7 +7,7 @@ import {
   type SnapshotNode,
   type StyleRecord,
   type VariableRecord,
-} from "../../src/core/model/snapshot"
+} from "../../src/core/model/snapshot.ts"
 
 export interface NodeSpec extends Partial<Omit<SnapshotNode, "id" | "type" | "childIds">> {
   readonly id: NodeId

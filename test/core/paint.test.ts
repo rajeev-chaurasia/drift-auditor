@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
-import { describePaint, paintListsEqual, paintsEqual, toHex } from "../../src/core/util/paint"
-import type { PaintRef } from "../../src/core/model/snapshot"
+import { describePaint, paintListsEqual, paintsEqual, toHex } from "../../src/core/util/paint.ts"
+import type { PaintRef } from "../../src/core/model/snapshot.ts"
 
 const solid = (hex: string, opacity = 1): PaintRef => ({
   kind: "solid",

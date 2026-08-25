@@ -1,5 +1,5 @@
-import type { SnapshotSummary } from "../../core/report/summary"
-import { h } from "./dom"
+import type { SnapshotSummary } from "../../core/report/summary.ts"
+import { h } from "./dom.ts"
 
 const ROWS: ReadonlyArray<readonly [string, (summary: SnapshotSummary) => number]> = [
   ["Pages", (s) => s.pages],
