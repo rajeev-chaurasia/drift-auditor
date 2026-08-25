@@ -1,6 +1,7 @@
 import type { DocumentSnapshot } from "../core/model/snapshot.ts"
 import type { AuditReport } from "../core/report/audit.ts"
 import type { PluginMessage, UiMessage } from "../figma/messages.ts"
+import { toCsv } from "../core/report/csv.ts"
 import { h, replace } from "./components/dom.ts"
 import { findingsList } from "./components/findings-list.ts"
 import { coverageNote, summaryTable } from "./components/summary-table.ts"
@@ -21,11 +22,13 @@ function scanButton(label: string, disabled: boolean): HTMLButtonElement {
 
 // Saving is a first class action rather than a debug affordance: a recorded
 // snapshot is what lets somebody else recompute the same findings.
-function saveButton(label: string, name: string, read: () => unknown): HTMLButtonElement {
+function saveButton(label: string, name: string, read: () => unknown, type = "application/json"): HTMLButtonElement {
   const button = h("button", { class: "secondary" }, label)
   button.onclick = () => {
     if (!recorded) return
-    const blob = new Blob([JSON.stringify(read(), null, 2)], { type: "application/json" })
+    const value = read()
+    const body = typeof value === "string" ? value : JSON.stringify(value, null, 2)
+    const blob = new Blob([body], { type })
     const link = h("a", { download: name, href: URL.createObjectURL(blob) })
     link.click()
     URL.revokeObjectURL(link.href)
@@ -71,6 +74,7 @@ function renderResult(message: Extract<PluginMessage, { type: "scan-complete" }>
       { class: "row" },
       scanButton("Scan again", false),
       saveButton("Save findings", `${file}.findings.json`, () => recorded?.report),
+      saveButton("Save CSV", `${file}.findings.csv`, () => toCsv(report.findings), "text/csv"),
       saveButton("Save snapshot", `${file}.snapshot.json`, () => recorded?.snapshot),
     ),
     summaryTable(report.summary),

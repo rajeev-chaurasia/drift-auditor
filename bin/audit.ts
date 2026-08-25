@@ -2,13 +2,14 @@
 import { readFileSync } from "node:fs"
 import { parseSnapshot, SnapshotError } from "../src/core/model/parse.ts"
 import { audit } from "../src/core/report/audit.ts"
+import { toCsv } from "../src/core/report/csv.ts"
 import type { Finding } from "../src/core/model/finding.ts"
 
 // The same core the plugin runs, behind a second frontend. If these two ever
 // disagree about one file, the findings depend on the runtime rather than on
 // the snapshot, and the reproducibility claim is void.
 
-const USAGE = "usage: npm run audit <snapshot.json> [--json] [--limit N]"
+const USAGE = "usage: npm run audit <snapshot.json> [--json] [--csv] [--limit N]"
 
 function describe(finding: Finding): string {
   const where = `${finding.location.pageName} / ${finding.location.path}`
@@ -40,6 +41,11 @@ function main(argv: readonly string[]): number {
     return 1
   }
 
+  if (argv.includes("--csv")) {
+    process.stdout.write(toCsv(report.findings))
+    return 0
+  }
+
   if (asJson) {
     console.log(JSON.stringify(report, null, 2))
     return 0
@@ -64,8 +70,10 @@ function main(argv: readonly string[]): number {
       `${(coverage.coverage * 100).toFixed(1)}%`,
   )
 
+  console.log(`  drift score ${report.score.total}, weight model ${report.score.modelVersion}`)
+
   for (const [category, total] of Object.entries(counts.byCategory).sort()) {
-    console.log(`  ${category}: ${total}`)
+    console.log(`  ${category}: ${total} findings, ${report.score.byCategory[category] ?? 0} severity`)
   }
 
   if (counts.withoutBaseline > 0) {
