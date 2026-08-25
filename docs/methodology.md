@@ -168,5 +168,58 @@ silence.
 
 ## Detachment candidates
 
-Not implemented yet. Planned rules, and the honesty constraints on them, are in
-[non-goals.md](non-goals.md).
+This is the only category here that is a guess, and it is a guess because the
+platform leaves no answer. Detaching an instance turns it into an ordinary
+frame and records nothing pointing back at what it was. No API can be asked.
+The best anything can do is notice that a frame has the shape and the name of a
+component sitting in the same file.
+
+So every finding from this detector carries `confidence: "candidate"`, is worth
+zero in the severity model, is counted apart in the panel and the export, and
+is excluded from the accuracy gate the other categories pass.
+
+### How a candidate is scored
+
+    confidence = 0.65 * structure + 0.35 * (the names match ? 1 : 0)
+
+`structure` comes from `similarity` in `src/core/util/fingerprint.ts`: a hash
+of the subtree shape, plus how close the two are in size and in layer count.
+Container types collapse to one token before hashing, because a detached frame
+is a `FRAME` and the component it came from is a `COMPONENT`, and a hash that
+recorded that difference could never match the one pair it exists to match.
+
+Structure alone is close to binary. It contributes 0.6 the moment the shape
+hash matches and very little otherwise, so a frame that was detached and then
+edited, which is the interesting case, scores under 0.4 on structure. The name
+is what survives editing, because Figma leaves the component's name on the
+frame it makes.
+
+That gives, on the arithmetic:
+
+| case | confidence |
+| --- | ---: |
+| untouched clone that kept its name | 1.00 |
+| clone that was renamed | 0.65 |
+| edited frame that kept its name | about 0.60 |
+| unrelated frame that happens to share a name | about 0.55 |
+
+`CANDIDATE_THRESHOLD` is 0.60, between the last two.
+
+### What is deliberately not compared
+
+Anything inside an instance, and anything inside a component. An instance
+mirrors its component by construction, so every layer in one would match. A
+frame with fewer than three nodes is skipped as well: a leaf frame has the
+shape of everything and is therefore evidence of nothing.
+
+### The number this category has not earned
+
+The threshold above was chosen from the arithmetic of its own formula. It has
+not been fitted to data, and it has not been measured against a file recorded
+out of Figma. Until it has, the precision and recall of this category are
+unknown, and the evidence artifact reports them as `candidateResults`, measured
+and gated on by nothing.
+
+When a recorded fixture exists, the thresholds get chosen on the tuning split
+and the published numbers come from the held-out split, so that the number is
+not a report of how well the thresholds fit the data they were fitted to.

@@ -26,9 +26,9 @@ The claim above is what this repository has to earn. It is not earned yet.
 | Override drift detection | done, not yet measured on a recorded fixture |
 | Accuracy harness and negative control | done |
 | Token drift detection | done, not yet measured on a recorded fixture |
-| Detachment candidates | not started |
-| Severity scoring and export | not started |
-| Published evidence artifact | not started |
+| Detachment candidates | done, deliberately unmeasured, see below |
+| Severity scoring and export | done |
+| Published evidence artifact | validator done, nothing recorded to publish yet |
 | Figma Community listing | not started |
 
 Nothing in this README quotes a measured number yet, because none has been

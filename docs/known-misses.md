@@ -50,3 +50,38 @@ A large file produces a large JSON object, held entirely in memory in the
 plugin sandbox and then serialised again to be saved. No limit is enforced and
 no streaming is done. The failure mode on a very large file has not been
 measured.
+
+## A detached instance that was moved and rebuilt is invisible
+
+The detachment guess needs either the component's shape or the component's
+name to survive. A frame that was detached, renamed, and restructured has
+neither, and nothing here will find it. That is not a bug to be fixed later.
+It is the whole category: Figma stores no link, so there is a point past which
+the evidence is simply gone.
+
+## Position changes inside an instance are not reported
+
+`x`, `y` and `relativeTransform` are in `IGNORED_FIELDS`, so a layer nudged
+inside an instance produces no finding. Auto layout rewrites those fields on
+every reflow and Figma reports them as overridden very liberally, so including
+them would have flooded the output with noise. The cost is real: a hand-moved
+layer inside an instance is genuine drift and this misses it.
+
+## Typography is not checked against tokens
+
+A text layer using no published text style is untokenised in exactly the sense
+this audit reports for colours, and it is not reported. The snapshot already
+carries what is needed. See [methodology.md](methodology.md).
+
+## The drift score cannot be compared between files
+
+It is a total, not a rate, so a larger file scores higher for being larger. The
+two ratios published beside it are the ones that compare. Nothing in the number
+itself says so, which is the miss.
+
+## A CSV cell beginning with an equals sign is a formula to some spreadsheets
+
+The export quotes per RFC 4180 and does not mangle values to prevent this,
+because the CSV has to agree with the JSON beside it. A Figma layer named
+`=SUM(A1:A9)` will be evaluated by Excel on open. The JSON export is the one to
+trust.
