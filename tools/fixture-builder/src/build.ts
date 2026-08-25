@@ -65,7 +65,9 @@ export async function buildFixture(): Promise<BuildResult> {
   await buildTypography(usage, collection, bodyStyle, recorder)
   await buildDetachment(usage, card, recorder)
 
-  figma.currentPage = usage
+  // Landing the user on the page holding the drift is a courtesy, not part of
+  // the build, so it never takes the labels down with it if it fails.
+  await recorder.step("Show the Usage page", () => figma.setCurrentPageAsync(usage))
 
   return {
     labels: {

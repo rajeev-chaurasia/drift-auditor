@@ -21,6 +21,7 @@ jobs:
       - run: npm run typecheck
       - run: npm run check:prose
       - run: npm run check:layering
+      - run: npm run check:dynamic-page
       - run: npm run build
       - run: npm test
 

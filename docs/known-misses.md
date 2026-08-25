@@ -94,3 +94,17 @@ The export quotes per RFC 4180 and does not mangle values to prevent this,
 because the CSV has to agree with the JSON beside it. A Figma layer named
 `=SUM(A1:A9)` will be evaluated by Excel on open. The JSON export is the one to
 trust.
+
+## The compiler cannot see the dynamic page restrictions
+
+Both plugins declare `"documentAccess": "dynamic-page"`, which Figma requires of
+every new plugin. Under it a long list of synchronous APIs throws at runtime,
+and the typings still declare them normally: `figma.currentPage` is typed as
+writable, with the restriction mentioned only in a doc comment.
+
+So that class of mistake gets past the compiler, past the tests, and past a
+fixture, and appears as a red line in a Figma panel with the file already half
+written. It did exactly that once. `script/check-dynamic-page.ts` now greps the
+sandbox code for the known offenders, which catches the ones on its list and
+nothing else. A synchronous API nobody has thought to add to that list will
+still get through.
