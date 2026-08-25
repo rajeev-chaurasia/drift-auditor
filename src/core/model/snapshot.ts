@@ -79,6 +79,11 @@ export interface SnapshotNode {
   readonly props: NodeProps
   readonly instance?: InstanceInfo
   readonly componentKey?: ComponentKey
+  // Present on layers inside a component or instance that a component property
+  // drives. Setting such a property is the sanctioned way to configure an
+  // instance, and it shows up in overrides exactly like a manual edit does, so
+  // this is what keeps intended configuration from being reported as drift.
+  readonly componentPropertyReferences?: Readonly<Record<string, string>>
 }
 
 export interface InstanceInfo {

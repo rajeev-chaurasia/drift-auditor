@@ -249,8 +249,22 @@ export async function readNode(
 
   const scene = node as SceneNode
   const props = await readProps(scene, context)
+  const references = readPropertyReferences(scene)
 
-  return scene.type === "COMPONENT"
-    ? { ...base, props, componentKey: scene.key }
-    : { ...base, props }
+  return {
+    ...base,
+    props,
+    ...(scene.type === "COMPONENT" && { componentKey: scene.key }),
+    ...(references && { componentPropertyReferences: references }),
+  }
+}
+
+function readPropertyReferences(node: SceneNode): Record<string, string> | undefined {
+  if (!("componentPropertyReferences" in node)) return undefined
+
+  const references = node.componentPropertyReferences
+  if (!references) return undefined
+
+  const entries = Object.entries(references).filter(([, value]) => typeof value === "string")
+  return entries.length > 0 ? (Object.fromEntries(entries) as Record<string, string>) : undefined
 }
