@@ -138,8 +138,39 @@ async function readStyleBindings(node: SceneNode, context: ReadContext): Promise
   return Object.keys(bindings).length > 0 ? bindings : undefined
 }
 
-// Paint bindings live on the paint, so only the scalar fields are read here.
-// Taking both would report the same token twice and inflate coverage.
+// Bindings for these live on the paint, the effect or the property itself.
+// Reading them here as well would report the same token twice and inflate
+// coverage.
+const BOUND_ELSEWHERE = new Set(["fills", "strokes", "effects", "layoutGrids", "componentProperties"])
+
+/**
+ * The id a field is bound to, whichever shape Figma reports it in.
+ *
+ * Typography fields come back as an array with one entry per styled text
+ * range, and everything else comes back as a single alias. Reading only the
+ * single form silently drops every typographic token in the file, which is
+ * exactly what it did until a recorded fixture caught it.
+ */
+function aliasId(value: unknown, nodeId: string, field: string, context: ReadContext): string | undefined {
+  if (Array.isArray(value)) {
+    const ids = value.map((entry) => (entry as { id?: string } | null)?.id).filter((id) => typeof id === "string")
+    if (ids.length === 0) return undefined
+
+    if (new Set(ids).size > 1) {
+      context.incomplete.push({
+        nodeId,
+        reason: "mixed-value",
+        detail: `${field} is bound to more than one variable across this node's ranges`,
+      })
+      return undefined
+    }
+    return ids[0]
+  }
+
+  const alias = value as { id?: string } | undefined
+  return typeof alias?.id === "string" ? alias.id : undefined
+}
+
 async function readScalarVariables(
   node: SceneNode,
   context: ReadContext,
@@ -149,9 +180,12 @@ async function readScalarVariables(
 
   const result: Record<string, VariableId> = {}
   for (const [field, value] of Object.entries(bound)) {
-    const alias = value as { id?: string } | undefined
-    if (!alias || typeof alias.id !== "string") continue
-    const id = await context.variables.note(alias.id)
+    if (BOUND_ELSEWHERE.has(field)) continue
+
+    const raw = aliasId(value, node.id, field, context)
+    if (!raw) continue
+
+    const id = await context.variables.note(raw)
     if (id) result[field] = id
   }
 

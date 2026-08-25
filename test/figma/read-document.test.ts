@@ -179,3 +179,87 @@ describe("what the reader admits it could not do", () => {
     expect(snapshot.capture.skipInvisibleInstanceChildren).toBe(true)
   })
 })
+
+/**
+ * Figma reports a typography binding as an array with one entry per styled
+ * text range, and everything else as a single alias. Reading only the single
+ * form dropped every typographic token in the file, and no hand written fake
+ * caught it: a fixture recorded out of Figma did.
+ */
+describe("variable bindings on text", () => {
+  const brand = {
+    id: "V:1",
+    key: "vk",
+    name: "type/size",
+    resolvedType: "FLOAT",
+    variableCollectionId: "C:1",
+    remote: false,
+  }
+
+  const bound = (value: unknown): FakeNode =>
+    text("4:1", "Heading", "Hello", { boundVariables: { fontSize: value } })
+
+  it("reads a binding reported as an array of one", async () => {
+    const snapshot = await read({
+      name: "Design",
+      pages: [{ id: "0:1", type: "PAGE", name: "Product", children: [bound([{ type: "VARIABLE_ALIAS", id: "V:1" }])] }],
+      variables: [brand],
+    })
+
+    expect(snapshot.nodes["4:1"]?.props.boundVariables).toEqual({ fontSize: "V:1" })
+  })
+
+  it("still reads a binding reported as a single alias", async () => {
+    const snapshot = await read({
+      name: "Design",
+      pages: [{ id: "0:1", type: "PAGE", name: "Product", children: [bound({ type: "VARIABLE_ALIAS", id: "V:1" })] }],
+      variables: [brand],
+    })
+
+    expect(snapshot.nodes["4:1"]?.props.boundVariables).toEqual({ fontSize: "V:1" })
+  })
+
+  it("refuses a field whose ranges disagree, and says so", async () => {
+    const snapshot = await read({
+      name: "Design",
+      pages: [
+        {
+          id: "0:1",
+          type: "PAGE",
+          name: "Product",
+          children: [
+            bound([
+              { type: "VARIABLE_ALIAS", id: "V:1" },
+              { type: "VARIABLE_ALIAS", id: "V:2" },
+            ]),
+          ],
+        },
+      ],
+      variables: [brand, { ...brand, id: "V:2", name: "type/other" }],
+    })
+
+    expect(snapshot.nodes["4:1"]?.props.boundVariables).toBeUndefined()
+    expect(snapshot.capture.incomplete).toContainEqual(
+      expect.objectContaining({ nodeId: "4:1", reason: "mixed-value" }),
+    )
+  })
+
+  it("leaves paint bindings to the paint, so a token is not counted twice", async () => {
+    const boxed: FakeNode = {
+      id: "5:1",
+      type: "RECTANGLE",
+      name: "Box",
+      visible: true,
+      fills: [solid("#0D99FF", "V:1")],
+      boundVariables: { fills: [{ type: "VARIABLE_ALIAS", id: "V:1" }] },
+    }
+    const snapshot = await read({
+      name: "Design",
+      pages: [{ id: "0:1", type: "PAGE", name: "Product", children: [boxed] }],
+      variables: [brand],
+    })
+
+    expect(snapshot.nodes["5:1"]?.props.boundVariables).toBeUndefined()
+    expect(snapshot.nodes["5:1"]?.props.fills?.[0]).toMatchObject({ variableId: "V:1" })
+  })
+})
