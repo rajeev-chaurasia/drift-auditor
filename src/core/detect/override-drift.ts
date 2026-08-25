@@ -1,7 +1,8 @@
 import { findingId, type Finding } from "../model/finding.ts"
 import type { DocumentSnapshot, NodeId, SnapshotNode } from "../model/snapshot.ts"
 import { locate } from "../util/location.ts"
-import { indexPath, resolveIndexPath, walkAll } from "../util/tree.ts"
+import { walkAll } from "../util/tree.ts"
+import { baselineFor } from "./attribution.ts"
 import type { Detector } from "./detector.ts"
 import { IGNORED_FIELDS, normaliseField, specFor } from "./fields.ts"
 
@@ -48,7 +49,7 @@ export class OverrideDriftDetector implements Detector {
       const subject = snapshot.nodes[override.nodeId]
       if (!subject) continue
 
-      const baseline = this.baselineFor(snapshot, instance, subject)
+      const baseline = baselineFor(snapshot, instance, subject)
 
       for (const rawField of override.fields) {
         if (IGNORED_FIELDS.has(rawField)) continue
@@ -68,35 +69,6 @@ export class OverrideDriftDetector implements Detector {
     }
 
     return findings
-  }
-
-  /**
-   * The matching node inside the main component.
-   *
-   * An instance and its component share a structure but share no node ids, so
-   * position is the only address that means the same thing in both. When the
-   * types at that position disagree, the structures have diverged and the
-   * match is not trustworthy, so the baseline is treated as absent. The
-   * failure mode is a finding without a before-value, never a diff against the
-   * wrong layer.
-   */
-  private baselineFor(
-    snapshot: DocumentSnapshot,
-    instance: SnapshotNode,
-    subject: SnapshotNode,
-  ): SnapshotNode | null {
-    const mainId = instance.instance?.mainComponentNodeId
-    if (!mainId) return null
-
-    const path = indexPath(snapshot, instance.id, subject.id)
-    if (!path) return null
-
-    // The one type difference that is not divergence: an instance root is
-    // always an INSTANCE and its baseline is always a COMPONENT.
-    if (path.length === 0) return snapshot.nodes[mainId] ?? null
-
-    const candidate = resolveIndexPath(snapshot, mainId, path)
-    return candidate && candidate.type === subject.type ? candidate : null
   }
 
   private compare(

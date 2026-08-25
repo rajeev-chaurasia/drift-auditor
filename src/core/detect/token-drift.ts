@@ -1,8 +1,9 @@
 import { findingId, type Finding } from "../model/finding.ts"
-import { isBindablePaint, type DocumentSnapshot, type NodeId, type SnapshotNode } from "../model/snapshot.ts"
+import { isBindablePaint, type DocumentSnapshot } from "../model/snapshot.ts"
 import { locate } from "../util/location.ts"
 import { describePaint } from "../util/paint.ts"
-import { indexPath, resolveIndexPath, walkAll } from "../util/tree.ts"
+import { walkAll } from "../util/tree.ts"
+import { blastRadius, inheritedBaseline, instanceReach, ownerOf } from "./attribution.ts"
 import type { Detector } from "./detector.ts"
 import { bindablePaints, isCompliant, type PaintCandidate } from "./paint-compliance.ts"
 
@@ -66,75 +67,10 @@ export class TokenDriftDetector implements Detector {
   }
 }
 
-/** The component subtree layer this one mirrors, when it sits inside an instance. */
+/** Whether this paint is the component's own colour, showing through unchanged. */
 function inheritedUnchanged(snapshot: DocumentSnapshot, candidate: PaintCandidate): boolean {
-  const instance = enclosingInstance(snapshot, candidate.node)
-  const mainId = instance?.instance?.mainComponentNodeId
-  if (!instance || !mainId) return false
-
-  const path = indexPath(snapshot, instance.id, candidate.node.id)
-  if (!path) return false
-
-  const baseline = path.length === 0 ? snapshot.nodes[mainId] : resolveIndexPath(snapshot, mainId, path)
+  const baseline = inheritedBaseline(snapshot, candidate.node)
   const mirrored = baseline?.props[candidate.surface]?.[candidate.index]
 
   return mirrored !== undefined && isBindablePaint(mirrored) && mirrored.hex === candidate.paint.hex
-}
-
-function enclosingInstance(snapshot: DocumentSnapshot, node: SnapshotNode): SnapshotNode | null {
-  let current: SnapshotNode | undefined = node
-
-  while (current) {
-    if (current.type === "INSTANCE" && current.instance) return current
-    current = current.parentId ? snapshot.nodes[current.parentId] : undefined
-  }
-
-  return null
-}
-
-function ownerOf(snapshot: DocumentSnapshot, node: SnapshotNode) {
-  let current: SnapshotNode | undefined = node
-
-  while (current) {
-    if (current.type === "COMPONENT" && current.componentKey) {
-      const record = snapshot.components[current.componentKey]
-      return {
-        id: current.id,
-        name: current.name,
-        componentKey: current.componentKey,
-        ...(record && { componentName: record.name }),
-      }
-    }
-    current = current.parentId ? snapshot.nodes[current.parentId] : undefined
-  }
-
-  return undefined
-}
-
-/** How many instances exist of each component, by the component's node id. */
-function instanceReach(snapshot: DocumentSnapshot): Map<NodeId, number> {
-  const reach = new Map<NodeId, number>()
-
-  for (const node of walkAll(snapshot)) {
-    const mainId = node.type === "INSTANCE" ? node.instance?.mainComponentNodeId : null
-    if (mainId) reach.set(mainId, (reach.get(mainId) ?? 0) + 1)
-  }
-
-  return reach
-}
-
-/**
- * One, unless the layer sits inside a component, in which case the finding
- * reaches every instance of it. A hardcoded colour in a component used ninety
- * times is a different problem from the same colour used once.
- */
-function blastRadius(snapshot: DocumentSnapshot, node: SnapshotNode, reach: Map<NodeId, number>): number {
-  let current: SnapshotNode | undefined = node
-
-  while (current) {
-    if (current.type === "COMPONENT") return Math.max(1, reach.get(current.id) ?? 0)
-    current = current.parentId ? snapshot.nodes[current.parentId] : undefined
-  }
-
-  return 1
 }
