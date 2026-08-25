@@ -252,3 +252,50 @@ describe("similarity", () => {
     expect(similarity(a, b)).toBeCloseTo(0.8)
   })
 })
+
+describe("containers in the shape", () => {
+  const snapshot = buildSnapshot({
+    pages: [
+      {
+        id: "page",
+        type: "PAGE",
+        children: [
+          {
+            id: "component",
+            type: "COMPONENT",
+            children: [
+              { id: "c-icon", type: "VECTOR" },
+              { id: "c-label", type: "TEXT" },
+            ],
+          },
+          {
+            id: "detached",
+            type: "FRAME",
+            children: [
+              { id: "d-icon", type: "VECTOR" },
+              { id: "d-label", type: "TEXT" },
+            ],
+          },
+          {
+            id: "different",
+            type: "FRAME",
+            children: [
+              { id: "x-icon", type: "RECTANGLE" },
+              { id: "x-label", type: "TEXT" },
+            ],
+          },
+        ],
+      },
+    ],
+  })
+
+  // The whole reason this module exists: the pair it has to match is a frame
+  // against the component that frame was detached from.
+  it("matches a detached frame to the component it mirrors", () => {
+    expect(fingerprint(snapshot, "detached")?.shape).toBe(fingerprint(snapshot, "component")?.shape)
+  })
+
+  it("still separates trees whose leaves differ", () => {
+    expect(fingerprint(snapshot, "different")?.shape).not.toBe(fingerprint(snapshot, "component")?.shape)
+  })
+})

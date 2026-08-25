@@ -1,4 +1,4 @@
-import type { DocumentSnapshot, NodeId, SnapshotNode } from "../model/snapshot.ts"
+import type { DocumentSnapshot, NodeId, NodeType, SnapshotNode } from "../model/snapshot.ts"
 import { children, walk } from "./tree.ts"
 
 export interface Fingerprint {
@@ -32,11 +32,29 @@ export function similarity(a: Fingerprint, b: Fingerprint): number {
   return 0.6 * shapeScore + 0.2 * sizeScore + 0.2 * countScore
 }
 
+// A detached instance is a FRAME and the component it came from is a
+// COMPONENT, so a shape that recorded a container's own type could never match
+// the one pair this exists to match. Containers collapse to a single token.
+// Leaves keep their type, because a vector standing where a text used to be is
+// a real structural difference.
+const CONTAINERS: ReadonlySet<NodeType> = new Set<NodeType>([
+  "FRAME",
+  "GROUP",
+  "SECTION",
+  "COMPONENT",
+  "COMPONENT_SET",
+  "INSTANCE",
+])
+
+function shapeToken(type: NodeType): string {
+  return CONTAINERS.has(type) ? "CONTAINER" : type
+}
+
 function encodeShape(snapshot: DocumentSnapshot, node: SnapshotNode): string {
   const kids = children(snapshot, node)
-  if (kids.length === 0) return `${node.type}(0)`
+  if (kids.length === 0) return `${shapeToken(node.type)}(0)`
   const encodedKids = kids.map((kid) => encodeShape(snapshot, kid)).join(",")
-  return `${node.type}(${kids.length})[${encodedKids}]`
+  return `${shapeToken(node.type)}(${kids.length})[${encodedKids}]`
 }
 
 function measureDepth(snapshot: DocumentSnapshot, node: SnapshotNode): number {
