@@ -2,9 +2,10 @@ import type { Finding } from "../model/finding.ts"
 import type { DocumentSnapshot } from "../model/snapshot.ts"
 import type { Detector } from "./detector.ts"
 import { OverrideDriftDetector } from "./override-drift.ts"
+import { TokenDriftDetector } from "./token-drift.ts"
 
 /** The one place a category is registered. Adding one is a file and a line. */
-export const DETECTORS: readonly Detector[] = [new OverrideDriftDetector()]
+export const DETECTORS: readonly Detector[] = [new OverrideDriftDetector(), new TokenDriftDetector()]
 
 /**
  * Every finding, in a fixed order.
