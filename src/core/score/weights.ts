@@ -17,6 +17,7 @@ export const CATEGORY_WEIGHTS: Readonly<Record<Category, number>> = {
   // component, the other is a value that follows nothing at all.
   "override-drift": 1,
   "token-drift": 1,
+  "typography-drift": 1,
   // Never reaches the score. Detachment is inferred rather than answered by
   // the API, and a probabilistic finding has no business moving a number that
   // is presented as exact. It is kept here so the table is complete.

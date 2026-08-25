@@ -7,6 +7,7 @@ export type Filter = Category | "all"
 const LABELS: Readonly<Record<Category, string>> = {
   "override-drift": "Instance drift",
   "token-drift": "Token drift",
+  "typography-drift": "Typography drift",
   detachment: "Detached?",
 }
 
@@ -86,6 +87,7 @@ export function filterBar(
     button("all", "All"),
     button("override-drift", LABELS["override-drift"]),
     button("token-drift", LABELS["token-drift"]),
+    button("typography-drift", LABELS["typography-drift"]),
     button("detachment", LABELS.detachment),
   )
 }

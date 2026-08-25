@@ -20,7 +20,7 @@ const main: FakeNode = {
   width: 120,
   height: 40,
   fills: [solid("#0D99FF", "V:1")],
-  children: [text("1:2", "Label", "Submit")],
+  children: [text("1:2", "Label", "Submit", { textStyleId: "S:1" })],
 }
 
 const drifted: FakeNode = {
@@ -33,7 +33,7 @@ const drifted: FakeNode = {
   fills: [solid("#FF3B30")],
   mainComponent: main,
   overrides: [{ id: "2:1", overriddenFields: ["fills"] }, { id: "2:2", overriddenFields: ["characters"] }],
-  children: [text("2:2", "Label", "Buy now")],
+  children: [text("2:2", "Label", "Buy now", { textStyleId: "S:1" })],
 }
 
 const configured: FakeNode = {
@@ -46,7 +46,9 @@ const configured: FakeNode = {
   fills: [solid("#0D99FF", "V:1")],
   mainComponent: main,
   overrides: [{ id: "3:2", overriddenFields: ["characters"] }],
-  children: [text("3:2", "Label", "Add", { componentPropertyReferences: { characters: "Label#1:0" } })],
+  children: [
+    text("3:2", "Label", "Add", { textStyleId: "S:1", componentPropertyReferences: { characters: "Label#1:0" } }),
+  ],
 }
 
 /**
@@ -59,6 +61,7 @@ describe("a document read and then audited", () => {
     uninstall = installFigma({
       name: "Design",
       pages: [{ id: "0:1", type: "PAGE", name: "Product", children: [main, drifted, configured] }],
+      styles: [{ id: "S:1", key: "sk", name: "type/body", type: "TEXT", remote: true }],
       variables: [
         { id: "V:1", key: "vk", name: "colour/brand", resolvedType: "COLOR", variableCollectionId: "C:1", remote: true },
       ],

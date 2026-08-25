@@ -1,6 +1,6 @@
 import type { ComponentKey, NodeId } from "./snapshot.ts"
 
-export type Category = "override-drift" | "token-drift" | "detachment"
+export type Category = "override-drift" | "token-drift" | "typography-drift" | "detachment"
 
 /**
  * `exact` means the Figma API answered the question directly. `candidate`
