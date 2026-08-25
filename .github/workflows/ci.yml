@@ -23,3 +23,8 @@ jobs:
       - run: npm run check:layering
       - run: npm run build
       - run: npm test
+
+      # The committed artifact has to survive recomputation from the fixtures
+      # it came from, or the numbers in the README are not evidence of
+      # anything.
+      - run: npm run check:evidence
