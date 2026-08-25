@@ -12,10 +12,19 @@ library instance. If it cannot, an override on such an instance is known to
 exist but its before-value is unknowable, and the finding carries no diff.
 
 The reader already handles this: it records `remote-baseline-unreadable` and
-sets `baselineAvailable: false`, and the panel reports the count. What is not
-yet known is how large that count is on a real file that consumes a library,
-which is most of the files worth auditing. Until it is measured, treat the
-coverage of override drift on library-heavy files as unknown.
+sets `baselineAvailable: false`, and the panel reports the count.
+
+`test/figma/read-document.test.ts` covers both paths, but it covers them
+against a fake plugin API written in this repository. That proves the reader
+does the right thing when Figma answers a given way. It proves nothing about
+which way Figma actually answers, because the fake was written to the
+documentation rather than measured against a real library instance.
+
+So what is still unknown is how large that count is on a real file that
+consumes a library, which is most of the files worth auditing. Until that is
+measured, treat the coverage of override drift on library-heavy files as
+unknown. [recording-a-fixture.md](recording-a-fixture.md) lists it as a case
+the first recorded file has to include.
 
 ## A text node with mixed properties has no single value to compare
 
