@@ -11,6 +11,7 @@ import { parseSnapshot } from "../src/core/model/parse.ts"
 
 const FIXTURES = "fixtures/recorded"
 const RESULTS = "evidence/results"
+const AUDITS = "evidence/audits"
 
 const sha256 = (body: string): string => createHash("sha256").update(body).digest("hex")
 
@@ -94,14 +95,46 @@ function verifyCommitted(fresh: EvidenceArtifact): string[] {
   return problems
 }
 
+/**
+ * Audits of real files keep their findings but not the snapshot behind them,
+ * because a real snapshot carries the text of every node in somebody's file.
+ * So the findings cannot be recomputed here, only shown to be unedited since
+ * they were recorded. That is a weaker claim, and it is checked separately
+ * from the accuracy numbers so the two are never mistaken for each other.
+ */
+function verifyAudits(): string[] {
+  if (!existsSync(AUDITS)) return []
+
+  const problems: string[] = []
+
+  for (const entry of readdirSync(AUDITS, { withFileTypes: true }).filter((e) => e.isDirectory())) {
+    const findings = join(AUDITS, entry.name, "findings.json")
+    const manifest = join(AUDITS, entry.name, "manifest.sha256")
+
+    if (!existsSync(findings)) problems.push(`audit ${entry.name} has no findings.json`)
+    else if (!existsSync(manifest)) problems.push(`audit ${entry.name} has no manifest.sha256`)
+    else if (!readFileSync(manifest, "utf8").includes(sha256(readFileSync(findings, "utf8")))) {
+      problems.push(`audit ${entry.name}: findings.json does not hash to what manifest.sha256 claims`)
+    }
+  }
+
+  return problems
+}
+
 function main(argv: readonly string[]): number {
   const fixtures = loadFixtures()
 
   // Nothing has been recorded out of Figma yet. This is a stated state rather
   // than a pass: the README says the claim is unearned, and the moment a
   // fixture directory exists every check below becomes a hard gate.
+  const auditProblems = verifyAudits()
+
   if (fixtures.length === 0) {
     console.log(`no fixtures under ${FIXTURES}, so nothing has been measured`)
+    if (auditProblems.length > 0) {
+      console.error(auditProblems.join("\n"))
+      return 1
+    }
     return 0
   }
 
@@ -125,7 +158,7 @@ function main(argv: readonly string[]): number {
     return 0
   }
 
-  problems.push(...verifyCommitted(artifact))
+  problems.push(...verifyCommitted(artifact), ...auditProblems)
 
   if (problems.length === 0) {
     console.log(`\nevidence ok, ${artifact.fixtures.length} fixture(s)`)

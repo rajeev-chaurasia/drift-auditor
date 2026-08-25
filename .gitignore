@@ -3,3 +3,8 @@ dist/
 tools/fixture-builder/dist/
 *.log
 .DS_Store
+
+# Recorded snapshots of real files carry the text content of every node in
+# them. Fixtures under fixtures/recorded are committed deliberately and are
+# named snapshot.json, so this pattern leaves them alone.
+*.snapshot.json
