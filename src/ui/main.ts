@@ -1,4 +1,3 @@
-import type { DocumentSnapshot } from "../core/model/snapshot.ts"
 import type { AuditReport } from "../core/report/audit.ts"
 import { toCsv } from "../core/report/csv.ts"
 import type { PluginMessage, UiMessage } from "../figma/messages.ts"
@@ -13,7 +12,7 @@ const app = document.getElementById("app") as HTMLElement
 
 const post = (message: UiMessage): void => parent.postMessage({ pluginMessage: message }, "*")
 
-let recorded: { report: AuditReport; snapshot: DocumentSnapshot } | null = null
+let recorded: AuditReport | null = null
 let filter: Filter = "all"
 
 function scanButton(label: string, disabled: boolean): HTMLButtonElement {
@@ -24,17 +23,15 @@ function scanButton(label: string, disabled: boolean): HTMLButtonElement {
 
 // Saving is a first class action rather than a debug affordance: a recorded
 // snapshot is what lets somebody else recompute the same findings.
-function saveButton(label: string, name: string, read: () => unknown, type = "application/json"): HTMLButtonElement {
+function download(name: string, body: string, type: string): void {
+  const link = h("a", { download: name, href: URL.createObjectURL(new Blob([body], { type })) })
+  link.click()
+  URL.revokeObjectURL(link.href)
+}
+
+function saveButton(label: string, onclick: () => void): HTMLButtonElement {
   const button = h("button", { class: "secondary" }, label)
-  button.onclick = () => {
-    if (!recorded) return
-    const value = read()
-    const body = typeof value === "string" ? value : JSON.stringify(value, null, 2)
-    const blob = new Blob([body], { type })
-    const link = h("a", { download: name, href: URL.createObjectURL(blob) })
-    link.click()
-    URL.revokeObjectURL(link.href)
-  }
+  button.onclick = onclick
   return button
 }
 
@@ -58,7 +55,7 @@ function renderScanning(nodesVisited: number): void {
 
 function renderResult(): void {
   if (!recorded) return
-  const { report, snapshot } = recorded
+  const report = recorded
   const file = report.file
 
   replace(
@@ -69,9 +66,11 @@ function renderResult(): void {
       "div",
       { class: "row" },
       scanButton("Scan again", false),
-      saveButton("Save findings", `${file}.findings.json`, () => report),
-      saveButton("Save CSV", `${file}.findings.csv`, () => toCsv(report.findings), "text/csv"),
-      saveButton("Save snapshot", `${file}.snapshot.json`, () => snapshot),
+      saveButton("Save findings", () =>
+        download(`${file}.findings.json`, JSON.stringify(report, null, 2), "application/json"),
+      ),
+      saveButton("Save CSV", () => download(`${file}.findings.csv`, toCsv(report.findings), "text/csv")),
+      saveButton("Save snapshot", () => post({ type: "save-snapshot" })),
     ),
     filterBar(report.findings, filter, (next) => {
       filter = next
@@ -104,9 +103,15 @@ window.onmessage = (event: MessageEvent) => {
     case "scan-progress":
       return renderScanning(message.nodesVisited)
     case "scan-complete":
-      recorded = { report: message.report, snapshot: message.snapshot }
+      recorded = message.report
       filter = "all"
       return renderResult()
+    case "snapshot":
+      return download(
+        `${message.fileName}.snapshot.json`,
+        JSON.stringify(message.snapshot, null, 2),
+        "application/json",
+      )
     case "scan-failed":
       return renderFailure(message.message)
   }
