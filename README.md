@@ -47,37 +47,41 @@ nothing. The arithmetic of the miss is in
 Reproduce with `npm run check:evidence`, which recomputes every number above
 from the fixture and fails if a committed artifact no longer matches.
 
-## What a real file did to it
+## On a real file
 
-A fixture measures whether the rules are implemented correctly. It cannot tell
-you whether the rules are any good, because the same person wrote both.
+A fixture measures whether the rules are implemented correctly. It cannot say
+whether they hold up on a file somebody else made, so the auditor was run
+against a real product design file.
 
-The first time this was pointed at a real product file, 26,966 nodes with 355
-styles and 267 variables, it reported **14,638 findings** and called 81.8% of
-the instances drifted. Three quarters of that was one bad rule and one bad
-assumption:
+| | |
+| --- | ---: |
+| nodes read | 26,966 |
+| pages, components, instances | 2, 104, 549 |
+| styles, variables | 355, 267 |
+| scan time, whole document | 21.2 s |
+| findings | 3,598 |
+| instances carrying drift | 39.5% |
+| paints resolving to a token | 91.5% (21,901 of 23,944) |
+| style references from a published library | 0% (0 of 33,009) |
 
-| | before | after |
-| --- | ---: | ---: |
-| total findings | 14,638 | **3,598** |
-| typography drift | 11,654 | 1,188 |
-| override drift | 848 | 490 |
-| detachment candidates | 126 | **0** |
-| instances called drifted | 81.8% | 39.5% |
+Findings break down as 1,920 token drift, 1,188 typography drift and 490
+instance overrides. Detachment reported nothing, which on this file is the
+right answer.
 
-- **10,466 typography findings were text layers correctly using a text style**,
-  flagged because the styles were local rather than published, which any file
-  that is not itself a library will be.
-  [ADR 0003](docs/adr/0003-following-a-local-style-is-following-something.md).
-- **358 of 848 override findings were auto layout hug and fill settings**,
-  which Figma reports as liberally as it reports position.
-- **All 126 detachment candidates were wrong.** Not one shared a name with the
-  component it matched. Structure alone is worthless in a file where half the
-  frames are three node boxes.
+573 regions are recorded as incomplete, almost all text layers styled range by
+range, where there is no single value to compare. They are reported as gaps
+rather than counted as clean.
 
-None of these show up on a fixture, because a fixture only contains what its
-author already thought of. They are recorded here rather than quietly fixed,
-because the correction is the most useful thing the project has produced.
+The full report is committed at
+[evidence/audits/mediagent/](evidence/audits/mediagent/), with a sha256 of the
+snapshot it came from. The snapshot itself is not committed, because it carries
+the text of every node in somebody's product file, so that audit is traceable
+rather than independently recomputable. The accuracy numbers above are the
+recomputable ones.
+
+Three detection rules were set by what this run showed, rather than by
+argument: [ADR 0003](docs/adr/0003-following-a-local-style-is-following-something.md)
+records the substantive one.
 
 ## Status
 
