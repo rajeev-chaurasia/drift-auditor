@@ -60,13 +60,29 @@ plugin sandbox and then serialised again to be saved. No limit is enforced and
 no streaming is done. The failure mode on a very large file has not been
 measured.
 
-## A detached instance that was moved and rebuilt is invisible
+## Detachment finds half of them, and here is the arithmetic
 
-The detachment guess needs either the component's shape or the component's
-name to survive. A frame that was detached, renamed, and restructured has
-neither, and nothing here will find it. That is not a bug to be fixed later.
-It is the whole category: Figma stores no link, so there is a point past which
-the evidence is simply gone.
+Measured on `fixtures/recorded/drift-01`, recall 0.50 with precision 1.00.
+Three frames, one component named `Card`:
+
+| frame | shape | similarity | confidence | outcome |
+| --- | --- | ---: | ---: | --- |
+| detached, left alone | matches | 1.000 | **1.000** | found |
+| detached, then a layer added | differs | 0.360 | **0.584** | missed |
+| unrelated frame sharing the name | differs | 0.176 | **0.464** | correctly ignored |
+
+`CANDIDATE_THRESHOLD` is 0.60, so the middle row missed by 0.016.
+
+There is clear daylight between 0.584 and 0.464, so a threshold near 0.52 would
+find all three correctly on this fixture. It has not been moved, because this
+fixture is the `tuning` split and moving a threshold to fit the file you then
+report on is not a measurement. The threshold moves when there is a held-out
+file to report on, and both numbers get republished.
+
+Past that, the category has a floor that no tuning reaches. The guess needs
+either the component's shape or its name to survive. A frame that was detached,
+renamed and restructured has neither, and nothing here will find it. Figma
+stores no link, so there is a point past which the evidence is simply gone.
 
 ## Position changes inside an instance are not reported
 

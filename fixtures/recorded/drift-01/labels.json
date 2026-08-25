@@ -1,6 +1,6 @@
 {
   "snapshot": "snapshot.json",
-  "split": "held-out",
+  "split": "tuning",
   "notes": "Built by tools/fixture-builder. Cases involving a published library are absent, because publishing a library needs a paid Figma plan. See docs/known-misses.md.",
   "cases": [
     {
@@ -177,6 +177,13 @@
       "field": "typography",
       "category": "typography-drift",
       "why": "detaching froze the component's untokenised type here too, and no component owns it now"
+    },
+    {
+      "page": "Usage",
+      "path": "Detached edited / Card",
+      "field": "structure",
+      "category": "detachment",
+      "why": "an instance was detached and then restructured, so only its name is left to recognise it by"
     },
     {
       "page": "Usage",

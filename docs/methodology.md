@@ -212,14 +212,13 @@ mirrors its component by construction, so every layer in one would match. A
 frame with fewer than three nodes is skipped as well: a leaf frame has the
 shape of everything and is therefore evidence of nothing.
 
-### The number this category has not earned
+### What it actually scored
 
-The threshold above was chosen from the arithmetic of its own formula. It has
-not been fitted to data, and it has not been measured against a file recorded
-out of Figma. Until it has, the precision and recall of this category are
-unknown, and the evidence artifact reports them as `candidateResults`, measured
-and gated on by nothing.
+Precision 1.00, recall 0.50, on a recorded fixture. The predictions in the table
+above turned out close: the untouched clone scored 1.000, the edited one 0.584
+against a predicted 0.60, and the name collision 0.464 against a predicted 0.55.
 
-When a recorded fixture exists, the thresholds get chosen on the tuning split
-and the published numbers come from the held-out split, so that the number is
-not a report of how well the thresholds fit the data they were fitted to.
+The threshold has still never been fitted to data, and it stays where it is
+until there is a held-out file to report on. The full arithmetic, and why the
+obvious adjustment has not been made, is in
+[known-misses.md](known-misses.md).

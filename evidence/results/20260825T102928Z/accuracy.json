@@ -1,0 +1,162 @@
+{
+  "weightModelVersion": 1,
+  "fixtures": [
+    {
+      "name": "drift-01",
+      "snapshotSha256": "cc12ed21786c6bc3434dc07c597d341885586610b14b04521e807f29e7ba4bef",
+      "split": "tuning",
+      "labelledCases": 33,
+      "results": [
+        {
+          "detector": "override-drift",
+          "categories": [
+            "override-drift"
+          ],
+          "matrix": {
+            "truePositives": 4,
+            "falsePositives": 0,
+            "falseNegatives": 0,
+            "precision": 1,
+            "recall": 1
+          },
+          "missed": [],
+          "spurious": []
+        },
+        {
+          "detector": "blunt:override-drift",
+          "categories": [
+            "override-drift"
+          ],
+          "matrix": {
+            "truePositives": 4,
+            "falsePositives": 10,
+            "falseNegatives": 0,
+            "precision": 0.2857,
+            "recall": 1
+          },
+          "missed": [],
+          "spurious": [
+            "override-drift|1:14|name",
+            "override-drift|1:18|name",
+            "override-drift|1:22|name",
+            "override-drift|1:26|name",
+            "override-drift|1:30|name",
+            "override-drift|1:32|name",
+            "override-drift|I1:14;1:9|styledTextSegments",
+            "override-drift|I1:18;1:9|characters",
+            "override-drift|I1:18;1:9|styledTextSegments",
+            "override-drift|I1:26;1:11|locked"
+          ]
+        },
+        {
+          "detector": "token-drift",
+          "categories": [
+            "token-drift"
+          ],
+          "matrix": {
+            "truePositives": 16,
+            "falsePositives": 0,
+            "falseNegatives": 0,
+            "precision": 1,
+            "recall": 1
+          },
+          "missed": [],
+          "spurious": []
+        },
+        {
+          "detector": "blunt:token-drift",
+          "categories": [
+            "token-drift"
+          ],
+          "matrix": {
+            "truePositives": 16,
+            "falsePositives": 15,
+            "falseNegatives": 0,
+            "precision": 0.5161,
+            "recall": 1
+          },
+          "missed": [],
+          "spurious": [
+            "token-drift|1:18|fills[0]",
+            "token-drift|1:22|fills[0]",
+            "token-drift|1:26|fills[0]",
+            "token-drift|1:37|fills[0]",
+            "token-drift|1:38|fills[0]",
+            "token-drift|I1:14;1:10|fills[0]",
+            "token-drift|I1:14;1:9|fills[0]",
+            "token-drift|I1:18;1:10|fills[0]",
+            "token-drift|I1:18;1:9|fills[0]",
+            "token-drift|I1:22;1:10|fills[0]",
+            "token-drift|I1:22;1:9|fills[0]",
+            "token-drift|I1:26;1:10|fills[0]",
+            "token-drift|I1:26;1:9|fills[0]",
+            "token-drift|I1:30;1:13|fills[0]",
+            "token-drift|I1:32;1:13|fills[0]"
+          ]
+        },
+        {
+          "detector": "typography-drift",
+          "categories": [
+            "typography-drift"
+          ],
+          "matrix": {
+            "truePositives": 11,
+            "falsePositives": 0,
+            "falseNegatives": 0,
+            "precision": 1,
+            "recall": 1
+          },
+          "missed": [],
+          "spurious": []
+        },
+        {
+          "detector": "blunt:typography-drift",
+          "categories": [
+            "typography-drift"
+          ],
+          "matrix": {
+            "truePositives": 10,
+            "falsePositives": 10,
+            "falseNegatives": 1,
+            "precision": 0.5,
+            "recall": 0.9091
+          },
+          "missed": [
+            "typography-drift|1:47|typography"
+          ],
+          "spurious": [
+            "typography-drift|1:39|typography",
+            "typography-drift|I1:14;1:9|typography",
+            "typography-drift|I1:18;1:10|typography",
+            "typography-drift|I1:18;1:9|typography",
+            "typography-drift|I1:22;1:10|typography",
+            "typography-drift|I1:22;1:9|typography",
+            "typography-drift|I1:26;1:10|typography",
+            "typography-drift|I1:26;1:9|typography",
+            "typography-drift|I1:30;1:13|typography",
+            "typography-drift|I1:32;1:13|typography"
+          ]
+        }
+      ],
+      "candidateResults": [
+        {
+          "detector": "detachment",
+          "categories": [
+            "detachment"
+          ],
+          "matrix": {
+            "truePositives": 1,
+            "falsePositives": 0,
+            "falseNegatives": 1,
+            "precision": 1,
+            "recall": 0.5
+          },
+          "missed": [
+            "detachment|1:62|structure"
+          ],
+          "spurious": []
+        }
+      ]
+    }
+  ]
+}

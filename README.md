@@ -15,42 +15,64 @@ half. What makes a drift number worth acting on is being able to hand someone
 the raw findings, the file they came from, and the rules that produced them,
 and have them arrive at the same number.
 
-## Status
+## The measured result
 
-The claim above is what this repository has to earn. It is not earned yet.
+From `evidence/results/`, against `fixtures/recorded/drift-01`: a Figma file
+built to drift on purpose, recorded by the plugin, and labelled from the file
+rather than from anything the detectors reported.
+
+| detector | category | precision | recall |
+| --- | --- | ---: | ---: |
+| override-drift | override drift | **1.00** | **1.00** |
+| blunt control | override drift | 0.29 | 1.00 |
+| token-drift | token drift | **1.00** | **1.00** |
+| blunt control | token drift | 0.52 | 1.00 |
+| typography-drift | typography drift | **1.00** | **1.00** |
+| blunt control | typography drift | 0.50 | 0.91 |
+| detachment | detachment | 1.00 | 0.50 |
+
+The control rows are the point. Each is the implementation somebody writes
+after an afternoon with the API: report everything Figma calls an override,
+report every colour without a variable on it, report every text layer without a
+style. They are not strawmen, and they run through the identical harness
+against the identical labels. Without them the first column is three numbers
+anybody could claim.
+
+Detachment is the honest one. It finds a detached instance that was left alone
+and misses one that was restructured afterwards, which is half of them. It is
+a guess by construction, so it is worth zero in the score and gated on by
+nothing. The arithmetic of the miss is in
+[docs/known-misses.md](docs/known-misses.md).
+
+Reproduce with `npm run check:evidence`, which recomputes every number above
+from the fixture and fails if a committed artifact no longer matches.
+
+## Status
 
 | | |
 | --- | --- |
 | Traversal and snapshot recording | done |
 | Snapshot integrity checks | done |
-| Override drift detection | done, not yet measured on a recorded fixture |
-| Accuracy harness and negative control | done |
-| Token drift detection | done, not yet measured on a recorded fixture |
-| Detachment candidates | done, deliberately unmeasured, see below |
+| Override, token and typography drift | done, measured above |
+| Two negative controls per exact category | done, each proven to fail |
+| Detachment candidates | done, measured, deliberately not gated on |
 | Severity scoring and export | done |
-| Published evidence artifact | validator done, nothing recorded to publish yet |
+| Published evidence artifact | one fixture, recorded and committed |
+| A held-out fixture | not yet, see below |
 | Figma Community listing | not started |
 
-Nothing in this README quotes a measured number yet, because none has been
-measured against a real file. When one appears here it will be recomputable
-from `evidence/results/`.
+Two things the numbers above do not cover, both stated rather than implied.
 
-The accuracy harness does already run, against a fixture written by hand:
+**The fixture is generated.** `tools/fixture-builder` writes the drift into a
+real Figma file, so the `overrides` arrays and property references it produces
+are Figma's own. What it cannot contain is a case nobody thought to generate.
+It is labelled `tuning` for that reason, and a hand broken file is the held-out
+set that has not been recorded yet.
 
-| detector | category | precision | recall |
-| --- | --- | ---: | ---: |
-| override-drift | override-drift | 1.00 | 1.00 |
-| blunt-control | override-drift | 0.33 | 0.83 |
-| token-drift | token-drift | 1.00 | 1.00 |
-| blunt-token-control | token-drift | 0.42 | 1.00 |
-
-The two control rows are the only reason the other two mean anything. Both
-controls are plausible implementations, not strawmen, and both run through the
-identical harness against the identical labels.
-
-This is still not the published result. A snapshot written by hand can only
-contain the layer shapes whoever wrote it already thought of, which is why the
-artifact will come from a file recorded out of Figma instead.
+**Nothing in it is published.** Publishing a library needs a paid Figma plan,
+so no style, component or variable in the fixture is `remote`, and the rules
+that turn on that flag go unmeasured. See
+[docs/known-misses.md](docs/known-misses.md).
 
 ## How it works
 
