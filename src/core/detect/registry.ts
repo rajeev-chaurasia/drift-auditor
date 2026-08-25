@@ -4,11 +4,13 @@ import type { Detector } from "./detector.ts"
 import { DetachmentDetector } from "./detachment.ts"
 import { OverrideDriftDetector } from "./override-drift.ts"
 import { TokenDriftDetector } from "./token-drift.ts"
+import { TypographyDriftDetector } from "./typography-drift.ts"
 
 /** The one place a category is registered. Adding one is a file and a line. */
 export const DETECTORS: readonly Detector[] = [
   new OverrideDriftDetector(),
   new TokenDriftDetector(),
+  new TypographyDriftDetector(),
   // Last, and never gated on. Its findings are inferred rather than answered
   // by the API, so they are worth zero in the score and are reported apart.
   new DetachmentDetector(),
