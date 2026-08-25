@@ -15,7 +15,8 @@
     "test": "vitest run",
     "check:prose": "node script/check-prose.ts",
     "check:layering": "node script/check-layering.ts",
-    "check": "npm run typecheck && npm run check:prose && npm run check:layering && npm run check:dynamic-page && npm test && npm run check:evidence",
+    "check:fields": "node script/check-field-coverage.ts",
+    "check": "npm run typecheck && npm run check:prose && npm run check:layering && npm run check:fields && npm run check:dynamic-page && npm test && npm run check:evidence",
     "audit": "node bin/audit.ts",
     "check:evidence": "node script/validate-evidence.ts",
     "check:dynamic-page": "node script/check-dynamic-page.ts"
