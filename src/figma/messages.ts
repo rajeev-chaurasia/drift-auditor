@@ -1,14 +1,14 @@
+import type { DocumentSnapshot } from "../core/model/snapshot"
+import type { SnapshotSummary } from "../core/report/summary"
+
 // The only channel between the sandbox and the panel. Both sides import these
-// types, so a message shape can never drift between them.
+// types, so a message shape cannot drift between them.
 
-export type UiMessage = { type: "close" }
+export type UiMessage = { type: "close" } | { type: "scan" }
 
-export type PluginMessage = { type: "ready" }
-
-export function postToUi(message: PluginMessage): void {
-  figma.ui.postMessage(message)
-}
-
-export function postToPlugin(message: UiMessage): void {
-  parent.postMessage({ pluginMessage: message }, "*")
-}
+export type PluginMessage =
+  | { type: "ready" }
+  | { type: "scan-started" }
+  | { type: "scan-progress"; nodesVisited: number }
+  | { type: "scan-complete"; fileName: string; summary: SnapshotSummary; snapshot: DocumentSnapshot }
+  | { type: "scan-failed"; message: string }

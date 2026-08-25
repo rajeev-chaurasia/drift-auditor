@@ -46,7 +46,7 @@ export interface CaptureMeta {
 // is load-bearing rather than diagnostic.
 export interface Incompleteness {
   readonly nodeId: NodeId
-  readonly reason: "remote-baseline-unreadable" | "read-failed" | "depth-limit"
+  readonly reason: "remote-baseline-unreadable" | "read-failed" | "mixed-value"
   readonly detail: string
 }
 
