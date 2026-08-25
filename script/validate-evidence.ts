@@ -34,11 +34,12 @@ function loadFixtures(): FixtureInput[] {
 function report(artifact: EvidenceArtifact): void {
   for (const fixture of artifact.fixtures) {
     console.log(`${fixture.name}, ${fixture.split}, ${fixture.labelledCases} labelled cases`)
-    for (const result of fixture.results) {
+    for (const result of [...fixture.results, ...fixture.candidateResults]) {
       const { precision, recall, truePositives, falsePositives, falseNegatives } = result.matrix
+      const gated = fixture.results.includes(result) ? "" : "  (inferred, not gated on)"
       console.log(
         `  ${result.detector.padEnd(22)} precision ${precision.toFixed(2)}  recall ${recall.toFixed(2)}` +
-          `  tp ${truePositives} fp ${falsePositives} fn ${falseNegatives}`,
+          `  tp ${truePositives} fp ${falsePositives} fn ${falseNegatives}${gated}`,
       )
     }
   }

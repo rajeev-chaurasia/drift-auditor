@@ -1,3 +1,4 @@
+import { DetachmentDetector } from "../detect/detachment.ts"
 import { OverrideDriftDetector } from "../detect/override-drift.ts"
 import { TokenDriftDetector } from "../detect/token-drift.ts"
 import type { Detector } from "../detect/detector.ts"
@@ -47,12 +48,28 @@ export interface FixtureResult {
   readonly split: LabelSet["split"]
   readonly labelledCases: number
   readonly results: readonly AccuracyResult[]
+  /**
+   * Categories that are inferred rather than answered by the API. Measured and
+   * published like everything else, and gated on by nothing. Holding a guess
+   * to the same bar as an exact answer would either force the bar down or
+   * force the guess to be dressed up as certainty.
+   */
+  readonly candidateResults: readonly AccuracyResult[]
 }
 
 export interface EvidenceArtifact {
   readonly weightModelVersion: number
   readonly fixtures: readonly FixtureResult[]
 }
+
+/**
+ * Detachment is measured on the held-out split only. Its thresholds are chosen
+ * against tuning fixtures, so a number taken from those would be reporting how
+ * well the thresholds fit the data they were fitted to.
+ */
+const CANDIDATE_PAIRINGS: readonly { category: Category; detector: Detector }[] = [
+  { category: "detachment", detector: new DetachmentDetector() },
+]
 
 export function evaluateFixture(input: FixtureInput): FixtureResult {
   const results = PAIRINGS.flatMap(({ category, detector, control }) => {
@@ -63,12 +80,22 @@ export function evaluateFixture(input: FixtureInput): FixtureResult {
     ]
   })
 
+  const candidateResults = CANDIDATE_PAIRINGS.map(({ category, detector }) =>
+    scoreAgainstLabels(
+      detector.category,
+      detector.detect(input.snapshot),
+      expectedFindingIds(input.snapshot, input.labels, [category]),
+      [category],
+    ),
+  )
+
   return {
     name: input.name,
     snapshotSha256: input.snapshotSha256,
     split: input.labels.split,
     labelledCases: input.labels.cases.length,
     results,
+    candidateResults,
   }
 }
 

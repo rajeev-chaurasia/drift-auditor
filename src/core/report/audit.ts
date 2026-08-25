@@ -29,6 +29,8 @@ export interface AuditCounts {
   readonly byCategory: Readonly<Record<string, number>>
   readonly byFieldClass: Readonly<Record<string, number>>
   readonly withoutBaseline: number
+  /** Findings that are inferred rather than answered by the API. Counted apart. */
+  readonly candidates: number
 }
 
 export interface AuditReport {
@@ -60,14 +62,16 @@ function count(findings: readonly Finding[]): AuditCounts {
   const byCategory: Record<Category | string, number> = {}
   const byFieldClass: Record<FieldClass | string, number> = {}
   let withoutBaseline = 0
+  let candidates = 0
 
   for (const finding of findings) {
     byCategory[finding.category] = (byCategory[finding.category] ?? 0) + 1
     byFieldClass[finding.fieldClass] = (byFieldClass[finding.fieldClass] ?? 0) + 1
     if (!finding.baselineAvailable) withoutBaseline += 1
+    if (finding.confidence !== "exact") candidates += 1
   }
 
-  return { total: findings.length, byCategory, byFieldClass, withoutBaseline }
+  return { total: findings.length, byCategory, byFieldClass, withoutBaseline, candidates }
 }
 
 function rates(snapshot: DocumentSnapshot, findings: readonly Finding[]): AuditRates {
