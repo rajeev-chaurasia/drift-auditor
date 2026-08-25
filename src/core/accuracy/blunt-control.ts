@@ -63,3 +63,52 @@ export class BluntControlDetector implements Detector {
     return findings
   }
 }
+
+/**
+ * The same idea for tokens: every solid colour without a variable on it is
+ * drift.
+ *
+ * It is wrong in three ways, each matching a rule the real detector carries:
+ *
+ *   1. It never looks at styles, so a layer correctly using a published
+ *      library style is reported.
+ *   2. It never attributes to the source, so a component's hardcoded colour is
+ *      reported once per instance instead of once, which turns the score into
+ *      a census of how often that component was used.
+ *   3. It reports paints nothing could be bound to and paints that are hidden,
+ *      so it flags the platform and the invisible along with the real cases.
+ */
+export class BluntTokenControlDetector implements Detector {
+  readonly category = "token-drift" as const
+
+  detect(snapshot: DocumentSnapshot): Finding[] {
+    const findings: Finding[] = []
+
+    for (const node of walkAll(snapshot)) {
+      for (const surface of ["fills", "strokes"] as const) {
+        const paints = node.props[surface] ?? []
+
+        for (const [index, paint] of paints.entries()) {
+          if (paint.kind === "solid" && paint.variableId) continue
+
+          findings.push({
+            id: findingId(this.category, node.id, `${surface}[${index}]`),
+            category: this.category,
+            confidence: "exact",
+            fieldClass: "colour",
+            field: surface,
+            subjectId: node.id,
+            subjectName: node.name,
+            location: locate(snapshot, node.id),
+            expected: "a bound variable",
+            actual: paint.kind === "solid" ? paint.hex : paint.kind,
+            baselineAvailable: true,
+            blastRadius: 1,
+          })
+        }
+      }
+    }
+
+    return findings
+  }
+}

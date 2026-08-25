@@ -1,15 +1,22 @@
 import { describe, expect, it } from "vitest"
-import { BluntControlDetector } from "../../src/core/accuracy/blunt-control.ts"
+import { BluntControlDetector, BluntTokenControlDetector } from "../../src/core/accuracy/blunt-control.ts"
 import { expectedFindingIds, LabelError, parseLabels } from "../../src/core/accuracy/labels.ts"
 import { scoreAgainstLabels } from "../../src/core/accuracy/score.ts"
 import type { Detector } from "../../src/core/detect/detector.ts"
+import type { Category } from "../../src/core/model/finding.ts"
 import { OverrideDriftDetector } from "../../src/core/detect/override-drift.ts"
+import { TokenDriftDetector } from "../../src/core/detect/token-drift.ts"
 import { driftLabels, driftSnapshot } from "../support/drift-fixture.ts"
 
 const expected = expectedFindingIds(driftSnapshot, driftLabels)
 
-const score = (name: string, detector: Detector) =>
-  scoreAgainstLabels(name, detector.detect(driftSnapshot), expected, ["override-drift"])
+const score = (name: string, detector: Detector, category: Category = "override-drift") =>
+  scoreAgainstLabels(
+    name,
+    detector.detect(driftSnapshot),
+    expectedFindingIds(driftSnapshot, driftLabels, [category]),
+    [category],
+  )
 
 describe("the labels themselves", () => {
   it("resolve to a layer that exists, every one of them", () => {
@@ -76,5 +83,52 @@ describe("the override detector, against the same labels", () => {
     const blunt = score("blunt-control", new BluntControlDetector())
     expect(result.matrix.precision).toBeGreaterThan(blunt.matrix.precision)
     expect(result.matrix.recall).toBeGreaterThan(blunt.matrix.recall)
+  })
+})
+
+describe("the blunt token control, which must also fail", () => {
+  const result = score("blunt-token-control", new BluntTokenControlDetector(), "token-drift")
+
+  it("reports a layer that correctly uses a published library style", () => {
+    expect(result.spurious).toContain("token-drift|published|fills[0]")
+  })
+
+  it("reports paints nothing could ever be bound to", () => {
+    expect(result.spurious).toContain("token-drift|photo|fills[0]")
+    expect(result.spurious).toContain("token-drift|hidden|fills[0]")
+  })
+
+  it("charges a component's hardcoded colour to each of its instances", () => {
+    expect(result.spurious).toContain("token-drift|chip-1|fills[0]")
+    expect(result.spurious).toContain("token-drift|chip-2|fills[0]")
+  })
+
+  it("scores worse than the detector it stands in for", () => {
+    expect(result.matrix.precision).toBeLessThan(1)
+  })
+})
+
+describe("the token detector, against the same labels", () => {
+  const result = score("token-drift", new TokenDriftDetector(), "token-drift")
+
+  it("finds every labelled case", () => {
+    expect(result.missed).toEqual([])
+    expect(result.matrix.recall).toBe(1)
+  })
+
+  it("reports nothing that was not labelled", () => {
+    expect(result.spurious).toEqual([])
+    expect(result.matrix.precision).toBe(1)
+  })
+
+  it("charges a component's colour once, with the reach it actually has", () => {
+    const findings = new TokenDriftDetector().detect(driftSnapshot)
+    const chip = findings.find((finding) => finding.subjectId === "Chip")
+    expect(chip?.blastRadius).toBe(2)
+  })
+
+  it("beats the control on the same fixture", () => {
+    const blunt = score("blunt-token-control", new BluntTokenControlDetector(), "token-drift")
+    expect(result.matrix.precision).toBeGreaterThan(blunt.matrix.precision)
   })
 })

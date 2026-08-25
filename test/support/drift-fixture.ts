@@ -50,7 +50,7 @@ export const driftSnapshot = buildSnapshot({
               id: "drifted-label",
               type: "TEXT",
               name: "Label",
-              props: { characters: "Buy now", typography: { fontSize: 18 } },
+              props: { characters: "Buy now", typography: { fontSize: 18 }, fills: solidFill("#FFFFFF") },
             },
             { id: "drifted-icon", type: "VECTOR", name: "Icon", visible: false },
           ],
@@ -78,6 +78,47 @@ export const driftSnapshot = buildSnapshot({
         },
 
         {
+          id: "Chip",
+          type: "COMPONENT",
+          name: "Chip",
+          componentKey: "k-chip",
+          props: { fills: solidFill("#8E8E93") },
+        },
+        { id: "chip-1", type: "INSTANCE", name: "Chip one", props: { fills: solidFill("#8E8E93") }, instance: instanceInfo("Chip", [], "k-chip") },
+        { id: "chip-2", type: "INSTANCE", name: "Chip two", props: { fills: solidFill("#8E8E93") }, instance: instanceInfo("Chip", [], "k-chip") },
+
+        {
+          id: "tokenised",
+          type: "RECTANGLE",
+          name: "Tokenised swatch",
+          props: { fills: [{ kind: "solid", hex: "#0D99FF", opacity: 1, visible: true, variableId: "V:brand" }] },
+        },
+        {
+          id: "published",
+          type: "RECTANGLE",
+          name: "Published swatch",
+          props: { fills: solidFill("#0D99FF"), styles: { fill: "S:published" } },
+        },
+        {
+          id: "scratch",
+          type: "RECTANGLE",
+          name: "Scratch swatch",
+          props: { fills: solidFill("#34C759"), styles: { fill: "S:local" } },
+        },
+        {
+          id: "photo",
+          type: "RECTANGLE",
+          name: "Photo",
+          props: { fills: [{ kind: "image", visible: true }] },
+        },
+        {
+          id: "hidden",
+          type: "RECTANGLE",
+          name: "Hidden swatch",
+          props: { fills: [{ kind: "solid", hex: "#FF9500", opacity: 1, visible: false, variableId: null }] },
+        },
+
+        {
           id: "reverted",
           type: "INSTANCE",
           name: "Button reverted",
@@ -99,7 +140,17 @@ export const driftSnapshot = buildSnapshot({
       ],
     },
   ],
-  components: [{ key: "k-main", name: "Button", remote: false, nodeId: "main" }],
+  components: [
+    { key: "k-main", name: "Button", remote: false, nodeId: "main" },
+    { key: "k-chip", name: "Chip", remote: false, nodeId: "Chip" },
+  ],
+  styles: [
+    { id: "S:published", key: "sk-1", name: "Brand/Primary", type: "PAINT", remote: true },
+    { id: "S:local", key: "sk-2", name: "Scratch/Green", type: "PAINT", remote: false },
+  ],
+  variables: [
+    { id: "V:brand", key: "vk-1", name: "colour/brand", resolvedType: "COLOR", collectionId: "C:1", remote: true },
+  ],
 })
 
 export const driftLabels: LabelSet = {
@@ -148,6 +199,42 @@ export const driftLabels: LabelSet = {
       field: "effects",
       category: "override-drift",
       why: "a shadow was added, a field this audit reports without modelling its value",
+    },
+
+    {
+      page: "Product",
+      path: "Button",
+      field: "fills[0]",
+      category: "token-drift",
+      why: "the component types its brand blue directly instead of binding the variable that exists",
+    },
+    {
+      page: "Product",
+      path: "Button drifted",
+      field: "fills[0]",
+      category: "token-drift",
+      why: "this instance was repainted with a colour that is in no collection",
+    },
+    {
+      page: "Product",
+      path: "Chip",
+      field: "fills[0]",
+      category: "token-drift",
+      why: "the component itself hardcodes grey, so the defect is here and not in its two instances",
+    },
+    {
+      page: "Product",
+      path: "Scratch swatch",
+      field: "fills[0]",
+      category: "token-drift",
+      why: "it points at a local style, and a style nobody published is not a token",
+    },
+    {
+      page: "Product",
+      path: "Button drifted / Label",
+      field: "fills[0]",
+      category: "token-drift",
+      why: "the retyped label was also repainted by hand",
     },
   ],
 }

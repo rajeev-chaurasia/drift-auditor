@@ -75,13 +75,27 @@ function index(snapshot: DocumentSnapshot): Map<string, NodeId | null> {
   return byPath
 }
 
-/** Label cases turned into the finding ids they predict. Throws on a label that points at nothing. */
-export function expectedFindingIds(snapshot: DocumentSnapshot, labels: LabelSet): Set<string> {
+/**
+ * Label cases turned into the finding ids they predict, for the categories
+ * asked for. Throws on a label that points at nothing.
+ *
+ * Scoring one category against the labels for all of them would count every
+ * correct finding in the other categories as a miss, which says nothing about
+ * the detector under test.
+ */
+export function expectedFindingIds(
+  snapshot: DocumentSnapshot,
+  labels: LabelSet,
+  categories?: readonly Category[],
+): Set<string> {
+  const scope = categories ? new Set(categories) : null
   const byPath = index(snapshot)
   const expected = new Set<string>()
   const problems: string[] = []
 
   for (const entry of labels.cases) {
+    if (scope && !scope.has(entry.category)) continue
+
     const key = `${normalise(entry.page)}/${normalise(entry.path)}`
     const nodeId = byPath.get(key)
 
