@@ -90,3 +90,14 @@ export function namePath(snapshot: DocumentSnapshot, ancestorId: NodeId, nodeId:
 
   return names.join(" / ")
 }
+
+/** The page a node sits on, or null if the chain of parents is broken. */
+export function pageOf(snapshot: DocumentSnapshot, nodeId: NodeId): SnapshotNode | null {
+  let current = snapshot.nodes[nodeId]
+
+  while (current && current.parentId !== null) {
+    current = snapshot.nodes[current.parentId]
+  }
+
+  return current && current.type === "PAGE" ? current : null
+}

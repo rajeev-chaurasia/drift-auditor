@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { indexPath, namePath, resolveIndexPath, walk, walkAll } from "../../src/core/util/tree.ts"
+import { indexPath, namePath, pageOf, resolveIndexPath, walk, walkAll } from "../../src/core/util/tree.ts"
 import { buildSnapshot } from "../support/build-snapshot.ts"
 
 const snapshot = buildSnapshot({
@@ -64,5 +64,16 @@ describe("resolveIndexPath", () => {
 describe("namePath", () => {
   it("reads as a layer path a person can follow in Figma", () => {
     expect(namePath(snapshot, "card", "title")).toBe("body / Title")
+  })
+})
+
+describe("pageOf", () => {
+  it("climbs to the page a layer sits on", () => {
+    expect(pageOf(snapshot, "title")?.id).toBe("page")
+    expect(pageOf(snapshot, "page")?.id).toBe("page")
+  })
+
+  it("is null when the chain of parents does not reach a page", () => {
+    expect(pageOf(snapshot, "missing")).toBeNull()
   })
 })
