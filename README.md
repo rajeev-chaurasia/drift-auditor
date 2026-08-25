@@ -25,7 +25,7 @@ The claim above is what this repository has to earn. It is not earned yet.
 | Snapshot integrity checks | done |
 | Override drift detection | done, not yet measured on a recorded fixture |
 | Accuracy harness and negative control | done |
-| Token drift detection | not started |
+| Token drift detection | done, not yet measured on a recorded fixture |
 | Detachment candidates | not started |
 | Severity scoring and export | not started |
 | Published evidence artifact | not started |
@@ -35,13 +35,22 @@ Nothing in this README quotes a measured number yet, because none has been
 measured against a real file. When one appears here it will be recomputable
 from `evidence/results/`.
 
-The accuracy harness does already run, against a fixture written by hand. On
-that fixture the override detector scores 1.00 precision and 1.00 recall, and
-the blunt control in `src/core/accuracy/blunt-control.ts` scores 0.33 and 0.83
-through the identical harness. That gap is the only reason the first pair of
-numbers means anything. It is not the published result: a snapshot written by
-hand can only contain the layer shapes whoever wrote it already thought of,
-which is why the artifact will come from a recorded file instead.
+The accuracy harness does already run, against a fixture written by hand:
+
+| detector | category | precision | recall |
+| --- | --- | ---: | ---: |
+| override-drift | override-drift | 1.00 | 1.00 |
+| blunt-control | override-drift | 0.33 | 0.83 |
+| token-drift | token-drift | 1.00 | 1.00 |
+| blunt-token-control | token-drift | 0.42 | 1.00 |
+
+The two control rows are the only reason the other two mean anything. Both
+controls are plausible implementations, not strawmen, and both run through the
+identical harness against the identical labels.
+
+This is still not the published result. A snapshot written by hand can only
+contain the layer shapes whoever wrote it already thought of, which is why the
+artifact will come from a file recorded out of Figma instead.
 
 ## How it works
 

@@ -106,32 +106,65 @@ layer, or to more than one, fails the run rather than being skipped.
 
 ### The negative control
 
-`src/core/accuracy/blunt-control.ts` is a deliberately naive detector: take
-everything in `InstanceNode.overrides` and report it. It is not a strawman, it
-is the obvious implementation, and it fails on all four rules above.
+`src/core/accuracy/blunt-control.ts` holds one deliberately naive detector per
+category. Neither is a strawman. Each is the obvious implementation somebody
+writes after an afternoon with the API, and each fails exactly on the rules
+above.
 
-It runs through the identical harness against the identical labels. On the hand
-authored fixture it scores 0.33 precision and 0.83 recall, against 1.00 and
-1.00 for the real detector. If the control ever scores as well as the detector,
-the fixture has stopped telling them apart and the accuracy number it produces
-is worthless, so that condition fails the run.
+`BluntControlDetector` reports everything in `InstanceNode.overrides`.
+`BluntTokenControlDetector` reports every solid paint with no variable on it.
+
+Both run through the identical harness against the identical labels. On the
+hand authored fixture:
+
+| detector | category | precision | recall |
+| --- | --- | ---: | ---: |
+| override-drift | override-drift | 1.00 | 1.00 |
+| blunt-control | override-drift | 0.33 | 0.83 |
+| token-drift | token-drift | 1.00 | 1.00 |
+| blunt-token-control | token-drift | 0.42 | 1.00 |
+
+The control's recall on tokens is 1.00, because reporting everything does find
+everything. Precision is where it fails, and that is the column the gate reads.
+
+If a control ever scores as well as the detector it stands in for, the fixture
+has stopped telling them apart and the accuracy number it produces is
+worthless. That condition fails the run.
 
 ## Token drift
 
-Not implemented yet. Planned rules:
+A paint is compliant when a variable is bound to it, or when the layer points
+at a style whose `remote` flag marks it as coming from a published library.
+Anything else is a colour somebody typed, which is what makes a redesign
+expensive.
 
-A paint or text property is compliant if it resolves to a bound variable, or to
-a style whose `remote` flag marks it as coming from a published library.
+Three rules do most of the work of keeping false positives at zero.
 
-Two rules will do most of the work of keeping false positives at zero:
+**Attribute to the source, once.** An instance that inherits a hardcoded fill
+unchanged from its main component is not itself the defect. The finding belongs
+to the component, raised once, carrying `blastRadius`: the number of instances
+it reaches. Without this rule the drift score is a census of how often a
+component was used, which measures nothing about drift. An instance that
+hardcoded a *different* colour of its own is still reported separately, because
+that is a second decision.
 
-- **Attribute to the source, once.** An instance that inherits a hardcoded fill
-  unchanged from its main component is not itself the defect. The finding
-  belongs to the component, reported once, with a blast radius equal to its
-  instance count. Without this rule the drift score is an instance census.
-- **Skip what cannot be bound.** Image and gradient paints are excluded,
-  because the API cannot bind a variable to them. Flagging them would be
-  flagging the platform.
+**Skip what cannot be bound.** Image, video and gradient paints are excluded,
+because the API cannot bind a variable to them. Flagging them would be flagging
+the platform. Hidden paints are excluded because they are not on screen to
+drift.
+
+**Count coverage over the same set.** `rates.tokenCoverage` is tokenised paints
+over bindable paints, and both the numerator and the denominator come from the
+same generator the findings do, in `src/core/detect/paint-compliance.ts`. A
+ratio whose denominator disagrees with the findings printed above it is worse
+than no ratio.
+
+### What this does not cover yet
+
+Typography. A text layer with no `textStyleId` and no bound type variables is
+untokenised in exactly the same sense, and is not currently reported. The
+snapshot already carries what is needed. Recorded here rather than implied by
+silence.
 
 ## Detachment candidates
 
