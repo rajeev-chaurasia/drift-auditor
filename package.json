@@ -15,7 +15,8 @@
     "test": "vitest run",
     "check:prose": "node script/check-prose.ts",
     "check:layering": "node script/check-layering.ts",
-    "check": "npm run typecheck && npm run check:prose && npm run check:layering && npm test"
+    "check": "npm run typecheck && npm run check:prose && npm run check:layering && npm test",
+    "audit": "node bin/audit.ts"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.135.0",
