@@ -1,0 +1,13 @@
+{
+  "name": "Drift Fixture Builder",
+  "id": "REPLACE_AT_REGISTRATION",
+  "api": "1.0.0",
+  "main": "dist/main.js",
+  "ui": "dist/ui.html",
+  "editorType": ["figma"],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": ["none"],
+    "reasoning": "A development tool. It writes pages into the open file and nothing leaves the machine."
+  }
+}

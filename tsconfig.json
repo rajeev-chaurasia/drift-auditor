@@ -17,6 +17,7 @@
   },
   "include": [
     "src",
+    "tools",
     "test",
     "bin",
     "script",

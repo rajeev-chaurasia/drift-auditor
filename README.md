@@ -84,7 +84,7 @@ priced would quietly improve the score.
 
 ```
 npm install
-npm run build              # bundles dist/main.js and dist/ui.html
+npm run build              # bundles both plugins
 ```
 
 In the Figma desktop app, Plugins, Development, Import plugin from manifest,

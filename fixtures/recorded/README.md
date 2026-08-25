@@ -9,6 +9,13 @@ the accuracy numbers in the README are computed from, and
       labels.json     the drift cases somebody put in the file on purpose
       README.md       what the file is, and why it was built this way
 
+## How one gets made
+
+[docs/recording-a-fixture.md](../../docs/recording-a-fixture.md) is the
+walkthrough. In short: `tools/fixture-builder` writes the mechanical cases and
+emits the labels for them, then a person breaks the file by hand for fifteen
+minutes and labels that by hand too.
+
 ## Why these are recorded rather than written
 
 A snapshot written by hand can only contain the layer shapes whoever wrote it
