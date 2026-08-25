@@ -62,7 +62,7 @@ export async function buildFixture(): Promise<BuildResult> {
   await buildCardUsages(usage, card, recorder)
   await buildButtonUsages(usage, button, recorder)
   await buildSwatches(usage, brand, scratch, recorder)
-  await buildTypography(usage, collection, bodyStyle, recorder)
+  await buildTypography(usage, collection, brand, bodyStyle, recorder)
   await buildDetachment(usage, card, recorder)
 
   // Landing the user on the page holding the drift is a courtesy, not part of
@@ -127,6 +127,13 @@ function buildCard(page: PageNode, brand: Variable, recorder: Recorder): Compone
       category: "typography-drift",
       why: "type set by hand in the component, following no style and no variable",
     })
+    recorder.expect({
+      page: COMPONENTS_PAGE,
+      path: `Card / ${layer}`,
+      field: "fills[0]",
+      category: "token-drift",
+      why: "text colour is the default black Figma gives a new layer, which no token covers",
+    })
   }
 
   return card
@@ -164,6 +171,13 @@ function buildButton(page: PageNode, brand: Variable, recorder: Recorder): Butto
     field: "typography",
     category: "typography-drift",
     why: "the same, in the other component",
+  })
+  recorder.expect({
+    page: COMPONENTS_PAGE,
+    path: "Button / Label",
+    field: "fills[0]",
+    category: "token-drift",
+    why: "and its text colour is untokenised too",
   })
 
   return { node, propertyId }
@@ -350,6 +364,7 @@ async function buildSwatches(
 async function buildTypography(
   page: PageNode,
   collection: VariableCollection,
+  brand: Variable,
   bodyStyle: TextStyle,
   recorder: Recorder,
 ): Promise<void> {
@@ -378,6 +393,7 @@ async function buildTypography(
   await recorder.step("Bound heading", () => {
     const node = label("Bound heading", "Bound heading", 24)
     place(node, 320)
+    node.fills = [boundSolid(BRAND, brand)]
     node.setBoundVariable("fontFamily", string("type/family", FONT.family))
     node.setBoundVariable("fontStyle", string("type/style", FONT.style))
     node.setBoundVariable("fontSize", number("type/heading-size", 24))
@@ -397,6 +413,13 @@ async function buildTypography(
       category: "typography-drift",
       why: "one property follows a variable and the rest were typed in, which is not tokenised type",
     })
+    recorder.expect({
+      page: USAGE_PAGE,
+      path: "Half bound heading",
+      field: "fills[0]",
+      category: "token-drift",
+      why: "default black text, in a layer that half tries",
+    })
   })
 
   await recorder.step("Styled heading", async () => {
@@ -410,6 +433,13 @@ async function buildTypography(
       field: "typography",
       category: "typography-drift",
       why: "it follows a local text style, and a style nobody published is not a token",
+    })
+    recorder.expect({
+      page: USAGE_PAGE,
+      path: "Styled heading",
+      field: "fills[0]",
+      category: "token-drift",
+      why: "a text style carries no colour here, so the black is still typed in",
     })
   })
 }
@@ -454,6 +484,13 @@ async function buildDetachment(page: PageNode, card: ComponentNode, recorder: Re
       recorder.expect({
         page: USAGE_PAGE,
         path: `Detached untouched / Card / ${layer}`,
+        field: "fills[0]",
+        category: "token-drift",
+        why: "detaching froze the default black text colour into a layer no component owns",
+      })
+      recorder.expect({
+        page: USAGE_PAGE,
+        path: `Detached untouched / Card / ${layer}`,
         field: "typography",
         category: "typography-drift",
         why: "detaching froze the component's untokenised type here too, and no component owns it now",
@@ -483,6 +520,13 @@ async function buildDetachment(page: PageNode, card: ComponentNode, recorder: Re
       why: "the same frozen white, in a frame that was then edited",
     })
     for (const layer of ["Title", "Body", "Footnote"]) {
+      recorder.expect({
+        page: USAGE_PAGE,
+        path: `Detached edited / Card / ${layer}`,
+        field: "fills[0]",
+        category: "token-drift",
+        why: "detaching froze the default black text colour into a layer no component owns",
+      })
       recorder.expect({
         page: USAGE_PAGE,
         path: `Detached edited / Card / ${layer}`,
