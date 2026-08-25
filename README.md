@@ -101,7 +101,8 @@ npm run audit path/to/file.snapshot.json -- --json
 Checks:
 
 ```
-npm run check              # typecheck, prose, layering, tests
+npm run check              # typecheck, prose, layering, tests, evidence
+npm run check:evidence     # recompute every published number from its fixture
 ```
 
 The plugin declares `networkAccess: { allowedDomains: ["none"] }`. It cannot
@@ -109,6 +110,7 @@ make a request, so the file never leaves the machine it is audited on.
 
 ## Documentation
 
+- [docs/recording-a-fixture.md](docs/recording-a-fixture.md), the one part of this that needs Figma, and how to do it
 - [docs/methodology.md](docs/methodology.md), what counts as drift and why
 - [docs/non-goals.md](docs/non-goals.md), what this deliberately does not do
 - [docs/known-misses.md](docs/known-misses.md), what it gets wrong, written to be useful to someone trying to break it
