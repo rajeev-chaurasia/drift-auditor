@@ -1,4 +1,4 @@
-import { summarise } from "../core/report/summary.ts"
+import { audit } from "../core/report/audit.ts"
 import type { PluginMessage, UiMessage } from "./messages.ts"
 import { readDocument } from "./snapshot/read-document.ts"
 
@@ -17,12 +17,7 @@ async function scan(): Promise<void> {
       onProgress: (nodesVisited) => post({ type: "scan-progress", nodesVisited }),
     })
 
-    post({
-      type: "scan-complete",
-      fileName: snapshot.file.name,
-      summary: summarise(snapshot),
-      snapshot,
-    })
+    post({ type: "scan-complete", report: audit(snapshot), snapshot })
   } catch (error) {
     post({ type: "scan-failed", message: error instanceof Error ? error.message : String(error) })
   }
