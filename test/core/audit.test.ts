@@ -38,10 +38,10 @@ const snapshot = buildSnapshot({
 describe("audit", () => {
   it("counts findings by category and by field class", () => {
     const report = audit(snapshot)
-    expect(report.counts.total).toBe(2)
     expect(report.counts.byCategory["override-drift"]).toBe(2)
+    expect(report.counts.byCategory["token-drift"]).toBe(1)
     expect(report.counts.byFieldClass.content).toBe(1)
-    expect(report.counts.byFieldClass.colour).toBe(1)
+    expect(report.counts.total).toBe(3)
   })
 
   it("rates drift per instance, not per finding, so one bad instance counts once", () => {
@@ -63,5 +63,17 @@ describe("audit", () => {
   it("rates a file with no instances as zero rather than dividing by zero", () => {
     const empty = buildSnapshot({ pages: [{ id: "page", type: "PAGE" }] })
     expect(audit(empty).rates.overrideRate).toBe(0)
+  })
+
+  it("counts token coverage over the same paints the token findings come from", () => {
+    const report = audit(snapshot)
+    const tokenFindings = report.findings.filter((finding) => finding.category === "token-drift")
+    expect(report.rates.tokenCoverage.bindable - report.rates.tokenCoverage.tokenised).toBe(tokenFindings.length)
+    expect(report.rates.tokenCoverage.coverage).toBe(0)
+  })
+
+  it("calls a file with nothing bindable fully covered rather than undefined", () => {
+    const empty = buildSnapshot({ pages: [{ id: "page", type: "PAGE" }] })
+    expect(audit(empty).rates.tokenCoverage.coverage).toBe(1)
   })
 })

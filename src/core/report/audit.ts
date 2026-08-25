@@ -1,3 +1,4 @@
+import { paintCoverage, type PaintCoverage } from "../detect/paint-compliance.ts"
 import { detectAll } from "../detect/registry.ts"
 import type { Detector } from "../detect/detector.ts"
 import type { Category, FieldClass, Finding } from "../model/finding.ts"
@@ -14,6 +15,12 @@ export interface AuditRates {
   readonly overrideRate: number
   readonly instancesConsidered: number
   readonly instancesDrifted: number
+  /**
+   * Paints resolving to a variable or a published style, over paints a
+   * variable could have been bound to. Counted over exactly the set the token
+   * findings are drawn from, so the two never disagree.
+   */
+  readonly tokenCoverage: PaintCoverage
 }
 
 export interface AuditCounts {
@@ -75,6 +82,7 @@ function rates(snapshot: DocumentSnapshot, findings: readonly Finding[]): AuditR
     overrideRate: considered === 0 ? 0 : round(drifted.size / considered),
     instancesConsidered: considered,
     instancesDrifted: drifted.size,
+    tokenCoverage: paintCoverage(snapshot),
   }
 }
 
