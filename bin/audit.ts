@@ -73,6 +73,11 @@ function main(argv: readonly string[]): number {
       `${(coverage.coverage * 100).toFixed(1)}%`,
   )
 
+  const adoption = rates.libraryAdoption
+  console.log(
+    `  ${adoption.published} of ${adoption.referenced} style references come from a published library, ` +
+      `${(adoption.rate * 100).toFixed(1)}%`,
+  )
   console.log(`  drift score ${report.score.total}, weight model ${report.score.modelVersion}`)
 
   for (const [category, total] of Object.entries(counts.byCategory).sort()) {

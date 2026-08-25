@@ -58,12 +58,11 @@ export class TypographyDriftDetector implements Detector {
   }
 }
 
+// Any text style counts, published or not. See the note on isCompliant in
+// paint-compliance.ts for the real file that settled this.
 function isCompliant(snapshot: DocumentSnapshot, node: SnapshotNode, typo: Typography): boolean {
   const textStyleId = node.props.styles?.text
-  if (textStyleId) {
-    const style = snapshot.styles[textStyleId]
-    if (style?.remote === true) return true
-  }
+  if (textStyleId && snapshot.styles[textStyleId]) return true
 
   const bound = node.props.boundVariables ?? {}
   for (const key of TYPOGRAPHY_KEYS) {

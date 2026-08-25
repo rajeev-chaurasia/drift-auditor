@@ -23,6 +23,9 @@ export function stats(report: AuditReport): HTMLElement {
       `${(rates.tokenCoverage.coverage * 100).toFixed(0)}%`,
       `of ${rates.tokenCoverage.bindable} paints tokenised`,
     ),
+    rates.libraryAdoption.referenced > 0
+      ? stat(`${(rates.libraryAdoption.rate * 100).toFixed(0)}%`, "of styles from a library")
+      : null,
     counts.candidates > 0 ? stat(String(counts.candidates), "detachment guesses") : null,
   )
 }

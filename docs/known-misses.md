@@ -84,19 +84,43 @@ either the component's shape or its name to survive. A frame that was detached,
 renamed and restructured has neither, and nothing here will find it. Figma
 stores no link, so there is a point past which the evidence is simply gone.
 
-## Position changes inside an instance are not reported
+## Position and auto layout sizing changes inside an instance are not reported
 
-`x`, `y` and `relativeTransform` are in `IGNORED_FIELDS`, so a layer nudged
-inside an instance produces no finding. Auto layout rewrites those fields on
-every reflow and Figma reports them as overridden very liberally, so including
-them would have flooded the output with noise. The cost is real: a hand-moved
-layer inside an instance is genuine drift and this misses it.
+`x`, `y` and `relativeTransform` are in `IGNORED_FIELDS`, and so are
+`counterAxisSizingMode` and `primaryAxisSizingMode`, the hug and fill settings.
 
-## Typography is not checked against tokens
+The sizing pair was added after measurement rather than on suspicion. On a real
+26,966 node file they were 287 and 71 of 848 override findings, more than any
+genuine defect in the file and 42% of the category. Figma reports them as
+liberally as it reports position.
 
-A text layer using no published text style is untokenised in exactly the sense
-this audit reports for colours, and it is not reported. The snapshot already
-carries what is needed. See [methodology.md](methodology.md).
+The cost is real and the same in both cases: a layer deliberately moved or
+resized inside an instance is genuine drift, and this misses it.
+
+## A detached instance that was renamed can never be found
+
+Detachment requires the frame's name to match the component's. Structure alone
+used to be enough, and on a real file that produced 126 candidates of which not
+one shared a name with what it matched: generic wrappers named
+`Background+Shadow` matching three node component variants named
+`variant=2,:hover=true`. In a file built on a UI kit, half the frames are three
+node boxes, so an identical shape carries almost no information.
+
+Requiring the name took those 126 to zero. It also means somebody who detaches
+and then renames is invisible to this, permanently. That is the trade, made
+deliberately, on measured evidence.
+
+## A token cannot be told apart from a swatch somebody saved once
+
+Since [ADR 0003](adr/0003-following-a-local-style-is-following-something.md),
+any style counts as tokenised. In a file with no library behind it, a carefully
+maintained type ramp and a colour somebody saved once look identical to this,
+because the API offers nothing that separates them there.
+
+The previous rule pretended to recover that distinction using `remote` and did
+not: it only marked every style in every non-library file as worthless. The
+distinction is genuinely unavailable, and `libraryAdoption` reports the one
+part of it that is measurable.
 
 ## The drift score cannot be compared between files
 

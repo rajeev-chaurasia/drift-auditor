@@ -4,6 +4,7 @@ import type { Detector } from "../detect/detector.ts"
 import type { Category, FieldClass, Finding } from "../model/finding.ts"
 import type { CaptureMeta, DocumentSnapshot } from "../model/snapshot.ts"
 import { scoreFindings, type DriftScore } from "../score/score.ts"
+import { libraryAdoption, type LibraryAdoption } from "./adoption.ts"
 import { walkAll } from "../util/tree.ts"
 import { summarise, type SnapshotSummary } from "./summary.ts"
 
@@ -22,6 +23,12 @@ export interface AuditRates {
    * findings are drawn from, so the two never disagree.
    */
   readonly tokenCoverage: PaintCoverage
+  /**
+   * Reported, never scored. A single file design system is a legitimate thing
+   * to have, so following a local style is not a defect, it is just not
+   * reuse across files.
+   */
+  readonly libraryAdoption: LibraryAdoption
 }
 
 export interface AuditCounts {
@@ -90,6 +97,7 @@ function rates(snapshot: DocumentSnapshot, findings: readonly Finding[]): AuditR
     instancesConsidered: considered,
     instancesDrifted: drifted.size,
     tokenCoverage: paintCoverage(snapshot),
+    libraryAdoption: libraryAdoption(snapshot),
   }
 }
 

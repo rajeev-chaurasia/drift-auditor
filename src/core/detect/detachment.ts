@@ -22,27 +22,32 @@ import type { Detector } from "./detector.ts"
  */
 
 /**
- * Structure counts for most of it, and the name for the rest.
+ * The name has to match. Structure only ranks what is left.
  *
- * Structure alone is close to binary: `similarity` gives 0.6 the moment the
- * shape hash matches and very little otherwise, so a detached frame that was
- * then edited, which is the interesting case, scores under 0.4 on structure.
- * A name is what survives that editing, because Figma leaves the component's
- * name on the frame it makes.
+ * Structure alone was the original rule, and on a real file of 27,000 nodes it
+ * produced 126 candidates of which not one shared a name with the component it
+ * matched. They were generic wrappers, `Background+Shadow` thirty six times,
+ * matching three node component variants named things like
+ * `variant=2,:hover=true`. In a file built on a UI kit, half the frames are
+ * three node boxes, so an identical shape is worth close to nothing.
+ *
+ * A name is the one piece of evidence that survives detaching, because Figma
+ * leaves the component's name on the frame it makes. Requiring it costs the
+ * case where somebody detached and then renamed, which is now unreachable and
+ * recorded as such in docs/known-misses.md.
  */
 const STRUCTURE_WEIGHT = 0.65
 const NAME_WEIGHT = 0.35
 
 /**
- * Chosen from the arithmetic of the weights above, not fitted to data.
+ * Measured, not guessed, but on the tuning fixture rather than a held out one.
  *
- * An untouched clone that kept its name scores 1.00. An edited frame that kept
- * its name scores about 0.60. A frame that merely shares a name scores about
- * 0.55. The threshold sits between the last two.
- *
- * This has not been measured against a recorded file. Until it has, the
- * precision and recall of this category are unknown, and are published as
- * unknown rather than as the numbers the other categories earned.
+ * With the name required, an untouched clone scores 1.00, a clone that was
+ * restructured afterwards scores 0.584, and an unrelated frame that merely
+ * shares the name scores 0.464. The threshold sits between the last two, so
+ * the restructured case is missed by 0.016. Moving it to fit the file it is
+ * then reported on would not be a measurement, so it stays where it is until
+ * there is a held out file. See docs/known-misses.md.
  */
 export const CANDIDATE_THRESHOLD = 0.6
 
@@ -149,8 +154,9 @@ function bestMatch(
   for (const component of components) {
     if (isRelated(snapshot, node.id, component.node.id)) continue
 
-    const confidence =
-      STRUCTURE_WEIGHT * similarity(print, component.print) + NAME_WEIGHT * (component.name === name ? 1 : 0)
+    if (component.name !== name) continue
+
+    const confidence = STRUCTURE_WEIGHT * similarity(print, component.print) + NAME_WEIGHT
 
     if (!best || confidence > best.confidence) best = { component, confidence }
   }

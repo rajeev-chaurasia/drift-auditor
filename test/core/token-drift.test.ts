@@ -53,9 +53,19 @@ describe("TokenDriftDetector", () => {
     expect(detector.detect(snapshot)).toEqual([])
   })
 
-  it("still flags a local style, because an unpublished style is not a token", () => {
+  // A local style is the design system of a file that is not itself a library,
+  // which most files are not. Requiring the style to be published reported
+  // 10,466 correct layers on a real file. See docs/known-misses.md.
+  it("says nothing when the layer points at a local style, which is still a decision to follow something", () => {
     const snapshot = page([
       { id: "box", type: "RECTANGLE", props: { fills: solidFill("#FF3B30"), styles: { fill: "S:loc" } } },
+    ])
+    expect(detector.detect(snapshot)).toEqual([])
+  })
+
+  it("still flags a style id that resolves to nothing, which follows nothing at all", () => {
+    const snapshot = page([
+      { id: "box", type: "RECTANGLE", props: { fills: solidFill("#FF3B30"), styles: { fill: "S:gone" } } },
     ])
     expect(detector.detect(snapshot)).toHaveLength(1)
   })

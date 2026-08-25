@@ -34,6 +34,16 @@ export const typographySnapshot = buildSnapshot({
           },
         },
         {
+          id: "orphan-style-text",
+          type: "TEXT",
+          name: "Orphan style text",
+          props: {
+            characters: "Dangling",
+            typography: { fontFamily: "Inter", fontStyle: "Regular", fontSize: 16, lineHeight: "24px" },
+            styles: { text: "S:gone" },
+          },
+        },
+        {
           id: "all-bound-text",
           type: "TEXT",
           name: "All bound text",
@@ -141,14 +151,16 @@ export const typographySnapshot = buildSnapshot({
 export const typographyLabels: LabelSet = {
   snapshot: "typography-fixture",
   split: "tuning",
-  notes: "Written from the file, not from detector output.",
+  notes:
+    "Written from the file, not from detector output. Local text is here unlabelled on purpose: " +
+    "following a local style is still following something.",
   cases: [
     {
       page: "Typography",
-      path: "Local text",
+      path: "Orphan style text",
       field: "typography",
       category: "typography-drift",
-      why: "points at a local text style, and a style nobody published is not a design token",
+      why: "it names a text style that is not in the file, so it follows nothing at all",
     },
     {
       page: "Typography",

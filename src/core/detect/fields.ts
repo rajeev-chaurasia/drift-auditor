@@ -42,6 +42,12 @@ export const IGNORED_FIELDS: ReadonlySet<string> = new Set([
   "layoutGrow",
   "layoutPositioning",
   "constrainProportions",
+  // Auto layout hug and fill sizing. Figma reports these as liberally as it
+  // reports position, and on a real file they were 358 of 848 override
+  // findings, more than any real defect. Same trade as the position fields:
+  // a genuine gap, recorded in docs/known-misses.md.
+  "counterAxisSizingMode",
+  "primaryAxisSizingMode",
   "parent",
   "type",
   "locked",

@@ -156,7 +156,9 @@ export const driftSnapshot = buildSnapshot({
 export const driftLabels: LabelSet = {
   snapshot: "hand-authored",
   split: "tuning",
-  notes: "Written from the file, not from detector output.",
+  notes:
+    "Written from the file, not from detector output. Scratch swatch is here unlabelled on purpose: " +
+    "pointing at a local style is still a decision to follow something.",
   cases: [
     {
       page: "Product",
@@ -221,13 +223,6 @@ export const driftLabels: LabelSet = {
       field: "fills[0]",
       category: "token-drift",
       why: "the component itself hardcodes grey, so the defect is here and not in its two instances",
-    },
-    {
-      page: "Product",
-      path: "Scratch swatch",
-      field: "fills[0]",
-      category: "token-drift",
-      why: "it points at a local style, and a style nobody published is not a token",
     },
     {
       page: "Product",

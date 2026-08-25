@@ -118,8 +118,6 @@ export const REPORTED_WITHOUT_VALUE: ReadonlyMap<string, string> = new Map([
     [
       "layoutWrap",
       "counterAxisSpacing",
-      "counterAxisSizingMode",
-      "primaryAxisSizingMode",
       "counterAxisAlignContent",
       "gridAutoTracks",
       "gridItemsPositioning",

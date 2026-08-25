@@ -309,15 +309,10 @@ async function buildSwatches(
   await recorder.step("Scratch swatch", async () => {
     const node = rectangle("Scratch swatch", 80, 40, [solid(SCRATCH_GREEN)])
     place(node, 60)
+    // No label. Pointing at a style is a decision to follow something, whether
+    // or not the file that holds it was ever published. This layer is here to
+    // hold that rule in place.
     await node.setFillStyleIdAsync(scratch.id)
-
-    recorder.expect({
-      page: USAGE_PAGE,
-      path: "Scratch swatch",
-      field: "fills[0]",
-      category: "token-drift",
-      why: "it points at a local style, and a style nobody published is not a token",
-    })
   })
 
   await recorder.step("Raw swatch", () => {
@@ -427,15 +422,10 @@ async function buildTypography(
   await recorder.step("Styled heading", async () => {
     const node = label("Styled heading", "Styled", 14)
     place(node, 440)
+    // No typography label, for the same reason as Scratch swatch. The colour
+    // label below stays, because a text style carries no colour.
     await node.setTextStyleIdAsync(bodyStyle.id)
 
-    recorder.expect({
-      page: USAGE_PAGE,
-      path: "Styled heading",
-      field: "typography",
-      category: "typography-drift",
-      why: "it follows a local text style, and a style nobody published is not a token",
-    })
     recorder.expect({
       page: USAGE_PAGE,
       path: "Styled heading",

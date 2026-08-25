@@ -39,8 +39,10 @@ describe("the blunt typography control, which must fail", () => {
     expect(result.spurious).toContain("typography-drift|badge-2-label|typography")
   })
 
-  it("misses an unpublished local style", () => {
-    expect(result.missed).toContain("typography-drift|local-text|typography")
+  // It looks only at whether a style id is set, never at whether that id
+  // resolves to anything, so a dangling reference reads as compliant to it.
+  it("misses a layer whose text style does not exist", () => {
+    expect(result.missed).toContain("typography-drift|orphan-style-text|typography")
   })
 })
 

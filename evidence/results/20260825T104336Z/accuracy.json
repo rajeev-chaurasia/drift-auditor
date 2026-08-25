@@ -5,7 +5,7 @@
       "name": "drift-01",
       "snapshotSha256": "cc12ed21786c6bc3434dc07c597d341885586610b14b04521e807f29e7ba4bef",
       "split": "tuning",
-      "labelledCases": 33,
+      "labelledCases": 31,
       "results": [
         {
           "detector": "override-drift",
@@ -54,7 +54,7 @@
             "token-drift"
           ],
           "matrix": {
-            "truePositives": 16,
+            "truePositives": 15,
             "falsePositives": 0,
             "falseNegatives": 0,
             "precision": 1,
@@ -69,10 +69,10 @@
             "token-drift"
           ],
           "matrix": {
-            "truePositives": 16,
-            "falsePositives": 15,
+            "truePositives": 15,
+            "falsePositives": 16,
             "falseNegatives": 0,
-            "precision": 0.5161,
+            "precision": 0.4839,
             "recall": 1
           },
           "missed": [],
@@ -80,6 +80,7 @@
             "token-drift|1:18|fills[0]",
             "token-drift|1:22|fills[0]",
             "token-drift|1:26|fills[0]",
+            "token-drift|1:35|fills[0]",
             "token-drift|1:37|fills[0]",
             "token-drift|1:38|fills[0]",
             "token-drift|I1:14;1:10|fills[0]",
@@ -100,7 +101,7 @@
             "typography-drift"
           ],
           "matrix": {
-            "truePositives": 11,
+            "truePositives": 10,
             "falsePositives": 0,
             "falseNegatives": 0,
             "precision": 1,
@@ -117,13 +118,11 @@
           "matrix": {
             "truePositives": 10,
             "falsePositives": 10,
-            "falseNegatives": 1,
+            "falseNegatives": 0,
             "precision": 0.5,
-            "recall": 0.9091
+            "recall": 1
           },
-          "missed": [
-            "typography-drift|1:47|typography"
-          ],
+          "missed": [],
           "spurious": [
             "typography-drift|1:39|typography",
             "typography-drift|I1:14;1:9|typography",

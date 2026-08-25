@@ -26,9 +26,9 @@ rather than from anything the detectors reported.
 | override-drift | override drift | **1.00** | **1.00** |
 | blunt control | override drift | 0.29 | 1.00 |
 | token-drift | token drift | **1.00** | **1.00** |
-| blunt control | token drift | 0.52 | 1.00 |
+| blunt control | token drift | 0.48 | 1.00 |
 | typography-drift | typography drift | **1.00** | **1.00** |
-| blunt control | typography drift | 0.50 | 0.91 |
+| blunt control | typography drift | 0.50 | 1.00 |
 | detachment | detachment | 1.00 | 0.50 |
 
 The control rows are the point. Each is the implementation somebody writes
@@ -47,6 +47,38 @@ nothing. The arithmetic of the miss is in
 Reproduce with `npm run check:evidence`, which recomputes every number above
 from the fixture and fails if a committed artifact no longer matches.
 
+## What a real file did to it
+
+A fixture measures whether the rules are implemented correctly. It cannot tell
+you whether the rules are any good, because the same person wrote both.
+
+The first time this was pointed at a real product file, 26,966 nodes with 355
+styles and 267 variables, it reported **14,638 findings** and called 81.8% of
+the instances drifted. Three quarters of that was one bad rule and one bad
+assumption:
+
+| | before | after |
+| --- | ---: | ---: |
+| total findings | 14,638 | **3,598** |
+| typography drift | 11,654 | 1,188 |
+| override drift | 848 | 490 |
+| detachment candidates | 126 | **0** |
+| instances called drifted | 81.8% | 39.5% |
+
+- **10,466 typography findings were text layers correctly using a text style**,
+  flagged because the styles were local rather than published, which any file
+  that is not itself a library will be.
+  [ADR 0003](docs/adr/0003-following-a-local-style-is-following-something.md).
+- **358 of 848 override findings were auto layout hug and fill settings**,
+  which Figma reports as liberally as it reports position.
+- **All 126 detachment candidates were wrong.** Not one shared a name with the
+  component it matched. Structure alone is worthless in a file where half the
+  frames are three node boxes.
+
+None of these show up on a fixture, because a fixture only contains what its
+author already thought of. They are recorded here rather than quietly fixed,
+because the correction is the most useful thing the project has produced.
+
 ## Status
 
 | | |
@@ -58,8 +90,9 @@ from the fixture and fails if a committed artifact no longer matches.
 | Detachment candidates | done, measured, deliberately not gated on |
 | Severity scoring and export | done |
 | Published evidence artifact | one fixture, recorded and committed |
+| Audited against a real file | done, and it changed three rules |
 | A held-out fixture | not yet, see below |
-| Figma Community listing | not started |
+| Figma Community listing | [deliberately not done](docs/non-goals.md) |
 
 Two things the numbers above do not cover, both stated rather than implied.
 

@@ -33,17 +33,26 @@ export function* bindablePaints(node: SnapshotNode): Generator<PaintCandidate> {
   }
 }
 
-/** Bound to a variable, or pointing at a style from a published library. */
+/**
+ * Bound to a variable, or pointing at a style. Either one is a decision to
+ * follow something rather than type a value in.
+ *
+ * This used to require the style to be `remote`, meaning it came from a
+ * published library. Run against a real file that rule reported 10,466 layers
+ * that were correctly using a text style, for the single reason that the file
+ * was not itself a published library, which most files are not. It told a well
+ * organised file it was almost entirely broken.
+ *
+ * Whether a style is published is a real question, and a different one. It is
+ * reported as `libraryAdoption` rather than folded in here.
+ */
 export function isCompliant(snapshot: DocumentSnapshot, candidate: PaintCandidate): boolean {
   if (candidate.paint.variableId && snapshot.variables[candidate.paint.variableId]) return true
 
   const styles = candidate.node.props.styles
   const styleId = candidate.surface === "fills" ? styles?.fill : styles?.stroke
-  if (!styleId) return false
 
-  // `remote` means the style lives in another file, which is the only signal
-  // the API offers that it came from a published library. See known-misses.
-  return snapshot.styles[styleId]?.remote === true
+  return styleId !== undefined && snapshot.styles[styleId] !== undefined
 }
 
 export interface PaintCoverage {

@@ -51,3 +51,11 @@ precisely so a reader can ignore the weights entirely.
 Drift over time needs somewhere to store yesterday's number, which means either
 a backend or writing into the customer's file. The export exists so that a
 design-ops team can keep that history in whatever they already use.
+
+## A Figma Community listing
+
+Publishing a free plugin to the Community is available on any Figma plan, so
+this is a choice rather than a limitation. The repository, the recorded
+fixture and the audit of a real file are the deliverable. A listing would add a
+review queue and a set of marketing assets without making any number here more
+checkable, which is the only axis this project optimises.

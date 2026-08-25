@@ -58,12 +58,25 @@ describe("TypographyDriftDetector", () => {
     expect(detector.detect(snapshot)).toEqual([])
   })
 
-  it("still flags a local style, because an unpublished style is not a token", () => {
+  // Requiring the style to be published reported 10,466 correct text layers on
+  // a real file, for the single reason that the file was not itself a library.
+  it("says nothing when the layer points at a local style, which is still a decision to follow something", () => {
     const snapshot = page([
       {
         id: "label",
         type: "TEXT",
         props: { typography: { fontFamily: "Inter", fontSize: 14 }, styles: { text: "S:loc" } },
+      },
+    ])
+    expect(detector.detect(snapshot)).toEqual([])
+  })
+
+  it("still flags a text style id that resolves to nothing", () => {
+    const snapshot = page([
+      {
+        id: "label",
+        type: "TEXT",
+        props: { typography: { fontFamily: "Inter", fontSize: 14 }, styles: { text: "S:gone" } },
       },
     ])
     expect(detector.detect(snapshot)).toHaveLength(1)

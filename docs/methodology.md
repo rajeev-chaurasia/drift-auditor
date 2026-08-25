@@ -134,9 +134,14 @@ worthless. That condition fails the run.
 ## Token drift
 
 A paint is compliant when a variable is bound to it, or when the layer points
-at a style whose `remote` flag marks it as coming from a published library.
-Anything else is a colour somebody typed, which is what makes a redesign
-expensive.
+at a style that exists in the file. Anything else is a colour somebody typed,
+which is what makes a redesign expensive.
+
+Compliance used to require the style to be published. A real file showed that
+rule reporting 10,466 correct layers, and
+[ADR 0003](adr/0003-following-a-local-style-is-following-something.md) records
+why it was reversed. How much of what a file follows comes from a library is
+reported separately as `libraryAdoption`, and carries no severity.
 
 Three rules do most of the work of keeping false positives at zero.
 
@@ -180,7 +185,8 @@ is excluded from the accuracy gate the other categories pass.
 
 ### How a candidate is scored
 
-    confidence = 0.65 * structure + 0.35 * (the names match ? 1 : 0)
+    the names must match, then
+    confidence = 0.65 * structure + 0.35
 
 `structure` comes from `similarity` in `src/core/util/fingerprint.ts`: a hash
 of the subtree shape, plus how close the two are in size and in layer count.
@@ -188,18 +194,21 @@ Container types collapse to one token before hashing, because a detached frame
 is a `FRAME` and the component it came from is a `COMPONENT`, and a hash that
 recorded that difference could never match the one pair it exists to match.
 
-Structure alone is close to binary. It contributes 0.6 the moment the shape
-hash matches and very little otherwise, so a frame that was detached and then
-edited, which is the interesting case, scores under 0.4 on structure. The name
-is what survives editing, because Figma leaves the component's name on the
-frame it makes.
+The name is a gate, not a term. Structure alone was the original rule and it
+produced 126 candidates on a real file, not one of which shared a name with
+what it matched. Structure only ranks what the name has already let through.
+
+Within that, structure is close to binary. It contributes 0.6 the moment the
+shape hash matches and very little otherwise, so a frame that was detached and
+then edited scores under 0.4 on it. The name is what survives editing, because
+Figma leaves the component's name on the frame it makes.
 
 That gives, on the arithmetic:
 
 | case | confidence |
 | --- | ---: |
 | untouched clone that kept its name | 1.00 |
-| clone that was renamed | 0.65 |
+| clone that was renamed | unreachable, the name gate rejects it |
 | edited frame that kept its name | about 0.60 |
 | unrelated frame that happens to share a name | about 0.55 |
 

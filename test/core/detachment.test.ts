@@ -114,12 +114,14 @@ describe("DetachmentDetector", () => {
     expect(findings[0]?.note).toContain("at 1.00")
   })
 
-  it("still flags a clone that was renamed, on structure alone", () => {
+  // The cost of requiring a name. On a real file, structure alone produced 126
+  // candidates and not one of them was right, so this case was traded away
+  // deliberately. It is recorded in docs/known-misses.md rather than implied.
+  it("cannot find a clone that was renamed, however exactly it matches", () => {
     const findings = detector.detect(
       withPage([card("main", "COMPONENT", "Card", { componentKey: "k-card" }), card("loose", "FRAME", "Untitled")]),
     )
-    expect(findings).toHaveLength(1)
-    expect(findings[0]?.note).toContain("at 0.65")
+    expect(findings).toEqual([])
   })
 
   it("puts the threshold above a name-only coincidence and below an edited clone", () => {

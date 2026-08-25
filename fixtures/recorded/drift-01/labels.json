@@ -1,7 +1,7 @@
 {
   "snapshot": "snapshot.json",
   "split": "tuning",
-  "notes": "Built by tools/fixture-builder. Cases involving a published library are absent, because publishing a library needs a paid Figma plan. See docs/known-misses.md.",
+  "notes": "Built by tools/fixture-builder. Cases involving a published library are absent, because publishing a library needs a paid Figma plan. Scratch swatch and Styled heading were labelled as drift in the first recording and are deliberately unlabelled now: auditing a real 27,000 node file showed that requiring a style to be published reported 10,466 layers that were correctly using one. See docs/known-misses.md.",
   "cases": [
     {
       "page": "Components",
@@ -96,13 +96,6 @@
     },
     {
       "page": "Usage",
-      "path": "Scratch swatch",
-      "field": "fills[0]",
-      "category": "token-drift",
-      "why": "it points at a local style, and a style nobody published is not a token"
-    },
-    {
-      "page": "Usage",
       "path": "Raw swatch",
       "field": "fills[0]",
       "category": "token-drift",
@@ -121,13 +114,6 @@
       "field": "fills[0]",
       "category": "token-drift",
       "why": "default black text, in a layer that half tries"
-    },
-    {
-      "page": "Usage",
-      "path": "Styled heading",
-      "field": "typography",
-      "category": "typography-drift",
-      "why": "it follows a local text style, and a style nobody published is not a token"
     },
     {
       "page": "Usage",
