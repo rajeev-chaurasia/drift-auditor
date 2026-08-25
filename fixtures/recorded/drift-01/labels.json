@@ -1,0 +1,231 @@
+{
+  "snapshot": "snapshot.json",
+  "split": "held-out",
+  "notes": "Built by tools/fixture-builder. Cases involving a published library are absent, because publishing a library needs a paid Figma plan. See docs/known-misses.md.",
+  "cases": [
+    {
+      "page": "Components",
+      "path": "Card",
+      "field": "fills[0]",
+      "category": "token-drift",
+      "why": "the component types its background white instead of binding a variable, and every instance inherits it"
+    },
+    {
+      "page": "Components",
+      "path": "Card / Title",
+      "field": "typography",
+      "category": "typography-drift",
+      "why": "type set by hand in the component, following no style and no variable"
+    },
+    {
+      "page": "Components",
+      "path": "Card / Title",
+      "field": "fills[0]",
+      "category": "token-drift",
+      "why": "text colour is the default black Figma gives a new layer, which no token covers"
+    },
+    {
+      "page": "Components",
+      "path": "Card / Body",
+      "field": "typography",
+      "category": "typography-drift",
+      "why": "type set by hand in the component, following no style and no variable"
+    },
+    {
+      "page": "Components",
+      "path": "Card / Body",
+      "field": "fills[0]",
+      "category": "token-drift",
+      "why": "text colour is the default black Figma gives a new layer, which no token covers"
+    },
+    {
+      "page": "Components",
+      "path": "Button / Label",
+      "field": "typography",
+      "category": "typography-drift",
+      "why": "the same, in the other component"
+    },
+    {
+      "page": "Components",
+      "path": "Button / Label",
+      "field": "fills[0]",
+      "category": "token-drift",
+      "why": "and its text colour is untokenised too"
+    },
+    {
+      "page": "Usage",
+      "path": "Card drifted",
+      "field": "fills",
+      "category": "override-drift",
+      "why": "the background was repainted on this instance only"
+    },
+    {
+      "page": "Usage",
+      "path": "Card drifted",
+      "field": "fills[0]",
+      "category": "token-drift",
+      "why": "and the colour it was repainted with is in no collection"
+    },
+    {
+      "page": "Usage",
+      "path": "Card drifted / Title",
+      "field": "characters",
+      "category": "override-drift",
+      "why": "the title was retyped rather than set through a property"
+    },
+    {
+      "page": "Usage",
+      "path": "Card drifted / Body",
+      "field": "fontSize",
+      "category": "override-drift",
+      "why": "the body type size was nudged away from the component"
+    },
+    {
+      "page": "Usage",
+      "path": "Card drifted / Body",
+      "field": "typography",
+      "category": "typography-drift",
+      "why": "and once it differs from the component, the instance owns the untokenised type itself"
+    },
+    {
+      "page": "Usage",
+      "path": "Card drifted / Accent",
+      "field": "visible",
+      "category": "override-drift",
+      "why": "the accent bar was hidden on this instance only"
+    },
+    {
+      "page": "Usage",
+      "path": "Scratch swatch",
+      "field": "fills[0]",
+      "category": "token-drift",
+      "why": "it points at a local style, and a style nobody published is not a token"
+    },
+    {
+      "page": "Usage",
+      "path": "Raw swatch",
+      "field": "fills[0]",
+      "category": "token-drift",
+      "why": "a colour typed straight in, following nothing"
+    },
+    {
+      "page": "Usage",
+      "path": "Half bound heading",
+      "field": "typography",
+      "category": "typography-drift",
+      "why": "one property follows a variable and the rest were typed in, which is not tokenised type"
+    },
+    {
+      "page": "Usage",
+      "path": "Half bound heading",
+      "field": "fills[0]",
+      "category": "token-drift",
+      "why": "default black text, in a layer that half tries"
+    },
+    {
+      "page": "Usage",
+      "path": "Styled heading",
+      "field": "typography",
+      "category": "typography-drift",
+      "why": "it follows a local text style, and a style nobody published is not a token"
+    },
+    {
+      "page": "Usage",
+      "path": "Styled heading",
+      "field": "fills[0]",
+      "category": "token-drift",
+      "why": "a text style carries no colour here, so the black is still typed in"
+    },
+    {
+      "page": "Usage",
+      "path": "Detached untouched / Card",
+      "field": "structure",
+      "category": "detachment",
+      "why": "an instance was detached and left alone, so both its shape and its name still match Card"
+    },
+    {
+      "page": "Usage",
+      "path": "Detached untouched / Card",
+      "field": "fills[0]",
+      "category": "token-drift",
+      "why": "detaching froze the component's hardcoded white into a frame of its own"
+    },
+    {
+      "page": "Usage",
+      "path": "Detached untouched / Card / Title",
+      "field": "fills[0]",
+      "category": "token-drift",
+      "why": "detaching froze the default black text colour into a layer no component owns"
+    },
+    {
+      "page": "Usage",
+      "path": "Detached untouched / Card / Title",
+      "field": "typography",
+      "category": "typography-drift",
+      "why": "detaching froze the component's untokenised type here too, and no component owns it now"
+    },
+    {
+      "page": "Usage",
+      "path": "Detached untouched / Card / Body",
+      "field": "fills[0]",
+      "category": "token-drift",
+      "why": "detaching froze the default black text colour into a layer no component owns"
+    },
+    {
+      "page": "Usage",
+      "path": "Detached untouched / Card / Body",
+      "field": "typography",
+      "category": "typography-drift",
+      "why": "detaching froze the component's untokenised type here too, and no component owns it now"
+    },
+    {
+      "page": "Usage",
+      "path": "Detached edited / Card",
+      "field": "fills[0]",
+      "category": "token-drift",
+      "why": "the same frozen white, in a frame that was then edited"
+    },
+    {
+      "page": "Usage",
+      "path": "Detached edited / Card / Title",
+      "field": "fills[0]",
+      "category": "token-drift",
+      "why": "detaching froze the default black text colour into a layer no component owns"
+    },
+    {
+      "page": "Usage",
+      "path": "Detached edited / Card / Title",
+      "field": "typography",
+      "category": "typography-drift",
+      "why": "frozen untokenised type, including the layer that was added afterwards"
+    },
+    {
+      "page": "Usage",
+      "path": "Detached edited / Card / Body",
+      "field": "fills[0]",
+      "category": "token-drift",
+      "why": "detaching froze the default black text colour into a layer no component owns"
+    },
+    {
+      "page": "Usage",
+      "path": "Detached edited / Card / Body",
+      "field": "typography",
+      "category": "typography-drift",
+      "why": "frozen untokenised type, including the layer that was added afterwards"
+    },
+    {
+      "page": "Usage",
+      "path": "Detached edited / Card / Footnote",
+      "field": "fills[0]",
+      "category": "token-drift",
+      "why": "detaching froze the default black text colour into a layer no component owns"
+    },
+    {
+      "page": "Usage",
+      "path": "Detached edited / Card / Footnote",
+      "field": "typography",
+      "category": "typography-drift",
+      "why": "frozen untokenised type, including the layer that was added afterwards"
+    }
+  ]
+}

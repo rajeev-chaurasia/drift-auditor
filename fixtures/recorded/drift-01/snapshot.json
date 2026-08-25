@@ -1,0 +1,1802 @@
+{
+  "schema": 1,
+  "file": {
+    "name": "drift auditor test",
+    "rootId": "0:0"
+  },
+  "capture": {
+    "recordedAt": "2026-08-25T10:26:26.199Z",
+    "producer": "drift-auditor 0.1.0",
+    "pagesLoaded": 3,
+    "skipInvisibleInstanceChildren": false,
+    "nodesVisited": 54,
+    "durationMs": 38,
+    "incomplete": []
+  },
+  "pageIds": [
+    "0:1",
+    "1:2",
+    "1:3"
+  ],
+  "nodes": {
+    "0:1": {
+      "id": "0:1",
+      "name": "Page 1",
+      "type": "PAGE",
+      "parentId": null,
+      "childIds": [],
+      "visible": true,
+      "props": {}
+    },
+    "1:2": {
+      "id": "1:2",
+      "name": "Components",
+      "type": "PAGE",
+      "parentId": null,
+      "childIds": [
+        "1:8",
+        "1:12"
+      ],
+      "visible": true,
+      "props": {}
+    },
+    "1:12": {
+      "id": "1:12",
+      "name": "Button",
+      "type": "COMPONENT",
+      "parentId": "1:2",
+      "childIds": [
+        "1:13"
+      ],
+      "visible": true,
+      "props": {
+        "width": 120,
+        "height": 40,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 8,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#0D99FF",
+            "opacity": 1,
+            "visible": true,
+            "variableId": "VariableID:1:5"
+          }
+        ],
+        "strokes": []
+      },
+      "componentKey": "6d1604983bd3d43e9177375b1d4814dba8ce4f76"
+    },
+    "1:13": {
+      "id": "1:13",
+      "name": "Label",
+      "type": "TEXT",
+      "parentId": "1:12",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 88,
+        "height": 20,
+        "opacity": 1,
+        "rotation": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#000000",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": [],
+        "characters": "Submit",
+        "typography": {
+          "fontFamily": "Inter",
+          "fontStyle": "Regular",
+          "lineHeight": "auto",
+          "letterSpacing": "0%",
+          "textCase": "ORIGINAL",
+          "textDecoration": "NONE",
+          "fontSize": 14
+        }
+      },
+      "componentPropertyReferences": {
+        "characters": "Label#1:0"
+      }
+    },
+    "1:8": {
+      "id": "1:8",
+      "name": "Card",
+      "type": "COMPONENT",
+      "parentId": "1:2",
+      "childIds": [
+        "1:9",
+        "1:10",
+        "1:11"
+      ],
+      "visible": true,
+      "props": {
+        "width": 240,
+        "height": 120,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 8,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#FFFFFF",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": []
+      },
+      "componentKey": "0820757e2ce8b8f0e5e00385acfb3605b243a122"
+    },
+    "1:11": {
+      "id": "1:11",
+      "name": "Accent",
+      "type": "RECTANGLE",
+      "parentId": "1:8",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 40,
+        "height": 4,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#0D99FF",
+            "opacity": 1,
+            "visible": true,
+            "variableId": "VariableID:1:5"
+          }
+        ],
+        "strokes": []
+      }
+    },
+    "1:10": {
+      "id": "1:10",
+      "name": "Body",
+      "type": "TEXT",
+      "parentId": "1:8",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 180,
+        "height": 22.4,
+        "opacity": 1,
+        "rotation": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#000000",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": [],
+        "characters": "Body copy",
+        "typography": {
+          "fontFamily": "Inter",
+          "fontStyle": "Regular",
+          "lineHeight": "auto",
+          "letterSpacing": "0%",
+          "textCase": "ORIGINAL",
+          "textDecoration": "NONE",
+          "fontSize": 14
+        }
+      }
+    },
+    "1:9": {
+      "id": "1:9",
+      "name": "Title",
+      "type": "TEXT",
+      "parentId": "1:8",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 180,
+        "height": 25.6,
+        "opacity": 1,
+        "rotation": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#000000",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": [],
+        "characters": "Card title",
+        "typography": {
+          "fontFamily": "Inter",
+          "fontStyle": "Regular",
+          "lineHeight": "auto",
+          "letterSpacing": "0%",
+          "textCase": "ORIGINAL",
+          "textDecoration": "NONE",
+          "fontSize": 16
+        }
+      }
+    },
+    "1:3": {
+      "id": "1:3",
+      "name": "Usage",
+      "type": "PAGE",
+      "parentId": null,
+      "childIds": [
+        "1:14",
+        "1:18",
+        "1:22",
+        "1:26",
+        "1:30",
+        "1:32",
+        "1:34",
+        "1:35",
+        "1:36",
+        "1:37",
+        "1:38",
+        "1:39",
+        "1:45",
+        "1:47",
+        "1:48",
+        "1:57",
+        "1:67"
+      ],
+      "visible": true,
+      "props": {}
+    },
+    "1:67": {
+      "id": "1:67",
+      "name": "Name collision",
+      "type": "FRAME",
+      "parentId": "1:3",
+      "childIds": [
+        "1:68"
+      ],
+      "visible": true,
+      "props": {
+        "width": 280,
+        "height": 160,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 0,
+        "strokeWeight": 1,
+        "fills": [],
+        "strokes": []
+      }
+    },
+    "1:68": {
+      "id": "1:68",
+      "name": "Card",
+      "type": "FRAME",
+      "parentId": "1:67",
+      "childIds": [
+        "1:69",
+        "1:70",
+        "1:71",
+        "1:72"
+      ],
+      "visible": true,
+      "props": {
+        "width": 600,
+        "height": 600,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 0,
+        "strokeWeight": 1,
+        "fills": [],
+        "strokes": []
+      }
+    },
+    "1:72": {
+      "id": "1:72",
+      "name": "Four",
+      "type": "ELLIPSE",
+      "parentId": "1:68",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 100,
+        "height": 100,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 0,
+        "strokeWeight": 1,
+        "fills": [],
+        "strokes": []
+      }
+    },
+    "1:71": {
+      "id": "1:71",
+      "name": "Three",
+      "type": "ELLIPSE",
+      "parentId": "1:68",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 100,
+        "height": 100,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 0,
+        "strokeWeight": 1,
+        "fills": [],
+        "strokes": []
+      }
+    },
+    "1:70": {
+      "id": "1:70",
+      "name": "Two",
+      "type": "ELLIPSE",
+      "parentId": "1:68",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 100,
+        "height": 100,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 0,
+        "strokeWeight": 1,
+        "fills": [],
+        "strokes": []
+      }
+    },
+    "1:69": {
+      "id": "1:69",
+      "name": "One",
+      "type": "ELLIPSE",
+      "parentId": "1:68",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 100,
+        "height": 100,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 0,
+        "strokeWeight": 1,
+        "fills": [],
+        "strokes": []
+      }
+    },
+    "1:57": {
+      "id": "1:57",
+      "name": "Detached edited",
+      "type": "FRAME",
+      "parentId": "1:3",
+      "childIds": [
+        "1:62"
+      ],
+      "visible": true,
+      "props": {
+        "width": 280,
+        "height": 160,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 0,
+        "strokeWeight": 1,
+        "fills": [],
+        "strokes": []
+      }
+    },
+    "1:62": {
+      "id": "1:62",
+      "name": "Card",
+      "type": "FRAME",
+      "parentId": "1:57",
+      "childIds": [
+        "1:63",
+        "1:64",
+        "1:65",
+        "1:66"
+      ],
+      "visible": true,
+      "props": {
+        "width": 240,
+        "height": 120,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 8,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#FFFFFF",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": []
+      }
+    },
+    "1:66": {
+      "id": "1:66",
+      "name": "Footnote",
+      "type": "TEXT",
+      "parentId": "1:62",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 180,
+        "height": 17.6,
+        "opacity": 1,
+        "rotation": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#000000",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": [],
+        "characters": "Terms apply",
+        "typography": {
+          "fontFamily": "Inter",
+          "fontStyle": "Regular",
+          "lineHeight": "auto",
+          "letterSpacing": "0%",
+          "textCase": "ORIGINAL",
+          "textDecoration": "NONE",
+          "fontSize": 11
+        }
+      }
+    },
+    "1:65": {
+      "id": "1:65",
+      "name": "Accent",
+      "type": "RECTANGLE",
+      "parentId": "1:62",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 40,
+        "height": 4,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#0D99FF",
+            "opacity": 1,
+            "visible": true,
+            "variableId": "VariableID:1:5"
+          }
+        ],
+        "strokes": []
+      }
+    },
+    "1:64": {
+      "id": "1:64",
+      "name": "Body",
+      "type": "TEXT",
+      "parentId": "1:62",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 180,
+        "height": 22.4,
+        "opacity": 1,
+        "rotation": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#000000",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": [],
+        "characters": "Body copy",
+        "typography": {
+          "fontFamily": "Inter",
+          "fontStyle": "Regular",
+          "lineHeight": "auto",
+          "letterSpacing": "0%",
+          "textCase": "ORIGINAL",
+          "textDecoration": "NONE",
+          "fontSize": 14
+        }
+      }
+    },
+    "1:63": {
+      "id": "1:63",
+      "name": "Title",
+      "type": "TEXT",
+      "parentId": "1:62",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 180,
+        "height": 25.6,
+        "opacity": 1,
+        "rotation": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#000000",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": [],
+        "characters": "Card title",
+        "typography": {
+          "fontFamily": "Inter",
+          "fontStyle": "Regular",
+          "lineHeight": "auto",
+          "letterSpacing": "0%",
+          "textCase": "ORIGINAL",
+          "textDecoration": "NONE",
+          "fontSize": 16
+        }
+      }
+    },
+    "1:48": {
+      "id": "1:48",
+      "name": "Detached untouched",
+      "type": "FRAME",
+      "parentId": "1:3",
+      "childIds": [
+        "1:53"
+      ],
+      "visible": true,
+      "props": {
+        "width": 280,
+        "height": 160,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 0,
+        "strokeWeight": 1,
+        "fills": [],
+        "strokes": []
+      }
+    },
+    "1:53": {
+      "id": "1:53",
+      "name": "Card",
+      "type": "FRAME",
+      "parentId": "1:48",
+      "childIds": [
+        "1:54",
+        "1:55",
+        "1:56"
+      ],
+      "visible": true,
+      "props": {
+        "width": 240,
+        "height": 120,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 8,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#FFFFFF",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": []
+      }
+    },
+    "1:56": {
+      "id": "1:56",
+      "name": "Accent",
+      "type": "RECTANGLE",
+      "parentId": "1:53",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 40,
+        "height": 4,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#0D99FF",
+            "opacity": 1,
+            "visible": true,
+            "variableId": "VariableID:1:5"
+          }
+        ],
+        "strokes": []
+      }
+    },
+    "1:55": {
+      "id": "1:55",
+      "name": "Body",
+      "type": "TEXT",
+      "parentId": "1:53",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 180,
+        "height": 22.4,
+        "opacity": 1,
+        "rotation": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#000000",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": [],
+        "characters": "Body copy",
+        "typography": {
+          "fontFamily": "Inter",
+          "fontStyle": "Regular",
+          "lineHeight": "auto",
+          "letterSpacing": "0%",
+          "textCase": "ORIGINAL",
+          "textDecoration": "NONE",
+          "fontSize": 14
+        }
+      }
+    },
+    "1:54": {
+      "id": "1:54",
+      "name": "Title",
+      "type": "TEXT",
+      "parentId": "1:53",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 180,
+        "height": 25.6,
+        "opacity": 1,
+        "rotation": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#000000",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": [],
+        "characters": "Card title",
+        "typography": {
+          "fontFamily": "Inter",
+          "fontStyle": "Regular",
+          "lineHeight": "auto",
+          "letterSpacing": "0%",
+          "textCase": "ORIGINAL",
+          "textDecoration": "NONE",
+          "fontSize": 16
+        }
+      }
+    },
+    "1:47": {
+      "id": "1:47",
+      "name": "Styled heading",
+      "type": "TEXT",
+      "parentId": "1:3",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 180,
+        "height": 22.4,
+        "opacity": 1,
+        "rotation": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#000000",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": [],
+        "characters": "Styled",
+        "typography": {
+          "fontFamily": "Inter",
+          "fontStyle": "Regular",
+          "lineHeight": "auto",
+          "letterSpacing": "0%",
+          "textCase": "ORIGINAL",
+          "textDecoration": "NONE",
+          "fontSize": 14
+        },
+        "styles": {
+          "text": "S:3b2f6aed101ddfdd21ec6815d529534b2953bab1,"
+        }
+      }
+    },
+    "1:45": {
+      "id": "1:45",
+      "name": "Half bound heading",
+      "type": "TEXT",
+      "parentId": "1:3",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 180,
+        "height": 38.4,
+        "opacity": 1,
+        "rotation": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#000000",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": [],
+        "characters": "Half bound",
+        "typography": {
+          "fontFamily": "Inter",
+          "fontStyle": "Regular",
+          "lineHeight": "auto",
+          "letterSpacing": "0%",
+          "textCase": "ORIGINAL",
+          "textDecoration": "NONE",
+          "fontSize": 24
+        },
+        "boundVariables": {
+          "fontSize": "VariableID:1:46"
+        }
+      }
+    },
+    "1:39": {
+      "id": "1:39",
+      "name": "Bound heading",
+      "type": "TEXT",
+      "parentId": "1:3",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 180,
+        "height": 38.4,
+        "opacity": 1,
+        "rotation": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#0D99FF",
+            "opacity": 1,
+            "visible": true,
+            "variableId": "VariableID:1:5"
+          }
+        ],
+        "strokes": [],
+        "characters": "Bound heading",
+        "typography": {
+          "fontFamily": "Inter",
+          "fontStyle": "Regular",
+          "lineHeight": "32px",
+          "letterSpacing": "0px",
+          "textCase": "ORIGINAL",
+          "textDecoration": "NONE",
+          "fontSize": 24
+        },
+        "boundVariables": {
+          "letterSpacing": "VariableID:1:44",
+          "fontSize": "VariableID:1:42",
+          "fontStyle": "VariableID:1:41",
+          "fontFamily": "VariableID:1:40",
+          "lineHeight": "VariableID:1:43"
+        }
+      }
+    },
+    "1:38": {
+      "id": "1:38",
+      "name": "Hidden swatch",
+      "type": "RECTANGLE",
+      "parentId": "1:3",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 80,
+        "height": 40,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#FF9500",
+            "opacity": 1,
+            "visible": false,
+            "variableId": null
+          }
+        ],
+        "strokes": []
+      }
+    },
+    "1:37": {
+      "id": "1:37",
+      "name": "Gradient panel",
+      "type": "RECTANGLE",
+      "parentId": "1:3",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 80,
+        "height": 40,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "gradient",
+            "gradient": "GRADIENT_LINEAR #0D99FF@0.000 #FF3B30@1.000",
+            "visible": true
+          }
+        ],
+        "strokes": []
+      }
+    },
+    "1:36": {
+      "id": "1:36",
+      "name": "Raw swatch",
+      "type": "RECTANGLE",
+      "parentId": "1:3",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 80,
+        "height": 40,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#FF9500",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": []
+      }
+    },
+    "1:35": {
+      "id": "1:35",
+      "name": "Scratch swatch",
+      "type": "RECTANGLE",
+      "parentId": "1:3",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 80,
+        "height": 40,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#34C759",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": [],
+        "styles": {
+          "fill": "S:9ca95ada5956e2f81c886944b6e5057d9884f3fd,"
+        }
+      }
+    },
+    "1:34": {
+      "id": "1:34",
+      "name": "Tokenised swatch",
+      "type": "RECTANGLE",
+      "parentId": "1:3",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 80,
+        "height": 40,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#0D99FF",
+            "opacity": 1,
+            "visible": true,
+            "variableId": "VariableID:1:5"
+          }
+        ],
+        "strokes": []
+      }
+    },
+    "1:32": {
+      "id": "1:32",
+      "name": "Button untouched",
+      "type": "INSTANCE",
+      "parentId": "1:3",
+      "childIds": [
+        "I1:32;1:13"
+      ],
+      "visible": true,
+      "props": {
+        "width": 120,
+        "height": 40,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 8,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#0D99FF",
+            "opacity": 1,
+            "visible": true,
+            "variableId": "VariableID:1:5"
+          }
+        ],
+        "strokes": []
+      },
+      "instance": {
+        "mainComponentKey": "6d1604983bd3d43e9177375b1d4814dba8ce4f76",
+        "mainComponentNodeId": "1:12",
+        "baselineAvailable": true,
+        "overrides": [
+          {
+            "nodeId": "1:32",
+            "fields": [
+              "name"
+            ]
+          }
+        ],
+        "componentProperties": {
+          "Label#1:0": "Submit"
+        }
+      }
+    },
+    "I1:32;1:13": {
+      "id": "I1:32;1:13",
+      "name": "Label",
+      "type": "TEXT",
+      "parentId": "1:32",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 88,
+        "height": 20,
+        "opacity": 1,
+        "rotation": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#000000",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": [],
+        "characters": "Submit",
+        "typography": {
+          "fontFamily": "Inter",
+          "fontStyle": "Regular",
+          "lineHeight": "auto",
+          "letterSpacing": "0%",
+          "textCase": "ORIGINAL",
+          "textDecoration": "NONE",
+          "fontSize": 14
+        }
+      },
+      "componentPropertyReferences": {
+        "characters": "Label#1:0"
+      }
+    },
+    "1:30": {
+      "id": "1:30",
+      "name": "Button configured",
+      "type": "INSTANCE",
+      "parentId": "1:3",
+      "childIds": [
+        "I1:30;1:13"
+      ],
+      "visible": true,
+      "props": {
+        "width": 120,
+        "height": 40,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 8,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#0D99FF",
+            "opacity": 1,
+            "visible": true,
+            "variableId": "VariableID:1:5"
+          }
+        ],
+        "strokes": []
+      },
+      "instance": {
+        "mainComponentKey": "6d1604983bd3d43e9177375b1d4814dba8ce4f76",
+        "mainComponentNodeId": "1:12",
+        "baselineAvailable": true,
+        "overrides": [
+          {
+            "nodeId": "1:30",
+            "fields": [
+              "name"
+            ]
+          }
+        ],
+        "componentProperties": {
+          "Label#1:0": "Add to basket"
+        }
+      }
+    },
+    "I1:30;1:13": {
+      "id": "I1:30;1:13",
+      "name": "Label",
+      "type": "TEXT",
+      "parentId": "1:30",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 88,
+        "height": 20,
+        "opacity": 1,
+        "rotation": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#000000",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": [],
+        "characters": "Add to basket",
+        "typography": {
+          "fontFamily": "Inter",
+          "fontStyle": "Regular",
+          "lineHeight": "auto",
+          "letterSpacing": "0%",
+          "textCase": "ORIGINAL",
+          "textDecoration": "NONE",
+          "fontSize": 14
+        }
+      },
+      "componentPropertyReferences": {
+        "characters": "Label#1:0"
+      }
+    },
+    "1:26": {
+      "id": "1:26",
+      "name": "Card locked",
+      "type": "INSTANCE",
+      "parentId": "1:3",
+      "childIds": [
+        "I1:26;1:9",
+        "I1:26;1:10",
+        "I1:26;1:11"
+      ],
+      "visible": true,
+      "props": {
+        "width": 240,
+        "height": 120,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 8,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#FFFFFF",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": []
+      },
+      "instance": {
+        "mainComponentKey": "0820757e2ce8b8f0e5e00385acfb3605b243a122",
+        "mainComponentNodeId": "1:8",
+        "baselineAvailable": true,
+        "overrides": [
+          {
+            "nodeId": "1:26",
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "nodeId": "I1:26;1:11",
+            "fields": [
+              "locked"
+            ]
+          }
+        ],
+        "componentProperties": {}
+      }
+    },
+    "I1:26;1:11": {
+      "id": "I1:26;1:11",
+      "name": "Accent",
+      "type": "RECTANGLE",
+      "parentId": "1:26",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 40,
+        "height": 4,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#0D99FF",
+            "opacity": 1,
+            "visible": true,
+            "variableId": "VariableID:1:5"
+          }
+        ],
+        "strokes": []
+      }
+    },
+    "I1:26;1:10": {
+      "id": "I1:26;1:10",
+      "name": "Body",
+      "type": "TEXT",
+      "parentId": "1:26",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 180,
+        "height": 22.4,
+        "opacity": 1,
+        "rotation": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#000000",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": [],
+        "characters": "Body copy",
+        "typography": {
+          "fontFamily": "Inter",
+          "fontStyle": "Regular",
+          "lineHeight": "auto",
+          "letterSpacing": "0%",
+          "textCase": "ORIGINAL",
+          "textDecoration": "NONE",
+          "fontSize": 14
+        }
+      }
+    },
+    "I1:26;1:9": {
+      "id": "I1:26;1:9",
+      "name": "Title",
+      "type": "TEXT",
+      "parentId": "1:26",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 180,
+        "height": 25.6,
+        "opacity": 1,
+        "rotation": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#000000",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": [],
+        "characters": "Card title",
+        "typography": {
+          "fontFamily": "Inter",
+          "fontStyle": "Regular",
+          "lineHeight": "auto",
+          "letterSpacing": "0%",
+          "textCase": "ORIGINAL",
+          "textDecoration": "NONE",
+          "fontSize": 16
+        }
+      }
+    },
+    "1:22": {
+      "id": "1:22",
+      "name": "Card untouched",
+      "type": "INSTANCE",
+      "parentId": "1:3",
+      "childIds": [
+        "I1:22;1:9",
+        "I1:22;1:10",
+        "I1:22;1:11"
+      ],
+      "visible": true,
+      "props": {
+        "width": 240,
+        "height": 120,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 8,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#FFFFFF",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": []
+      },
+      "instance": {
+        "mainComponentKey": "0820757e2ce8b8f0e5e00385acfb3605b243a122",
+        "mainComponentNodeId": "1:8",
+        "baselineAvailable": true,
+        "overrides": [
+          {
+            "nodeId": "1:22",
+            "fields": [
+              "name"
+            ]
+          }
+        ],
+        "componentProperties": {}
+      }
+    },
+    "I1:22;1:11": {
+      "id": "I1:22;1:11",
+      "name": "Accent",
+      "type": "RECTANGLE",
+      "parentId": "1:22",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 40,
+        "height": 4,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#0D99FF",
+            "opacity": 1,
+            "visible": true,
+            "variableId": "VariableID:1:5"
+          }
+        ],
+        "strokes": []
+      }
+    },
+    "I1:22;1:10": {
+      "id": "I1:22;1:10",
+      "name": "Body",
+      "type": "TEXT",
+      "parentId": "1:22",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 180,
+        "height": 22.4,
+        "opacity": 1,
+        "rotation": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#000000",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": [],
+        "characters": "Body copy",
+        "typography": {
+          "fontFamily": "Inter",
+          "fontStyle": "Regular",
+          "lineHeight": "auto",
+          "letterSpacing": "0%",
+          "textCase": "ORIGINAL",
+          "textDecoration": "NONE",
+          "fontSize": 14
+        }
+      }
+    },
+    "I1:22;1:9": {
+      "id": "I1:22;1:9",
+      "name": "Title",
+      "type": "TEXT",
+      "parentId": "1:22",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 180,
+        "height": 25.6,
+        "opacity": 1,
+        "rotation": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#000000",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": [],
+        "characters": "Card title",
+        "typography": {
+          "fontFamily": "Inter",
+          "fontStyle": "Regular",
+          "lineHeight": "auto",
+          "letterSpacing": "0%",
+          "textCase": "ORIGINAL",
+          "textDecoration": "NONE",
+          "fontSize": 16
+        }
+      }
+    },
+    "1:18": {
+      "id": "1:18",
+      "name": "Card reverted",
+      "type": "INSTANCE",
+      "parentId": "1:3",
+      "childIds": [
+        "I1:18;1:9",
+        "I1:18;1:10",
+        "I1:18;1:11"
+      ],
+      "visible": true,
+      "props": {
+        "width": 240,
+        "height": 120,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 8,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#FFFFFF",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": []
+      },
+      "instance": {
+        "mainComponentKey": "0820757e2ce8b8f0e5e00385acfb3605b243a122",
+        "mainComponentNodeId": "1:8",
+        "baselineAvailable": true,
+        "overrides": [
+          {
+            "nodeId": "1:18",
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "nodeId": "I1:18;1:9",
+            "fields": [
+              "characters",
+              "styledTextSegments"
+            ]
+          }
+        ],
+        "componentProperties": {}
+      }
+    },
+    "I1:18;1:11": {
+      "id": "I1:18;1:11",
+      "name": "Accent",
+      "type": "RECTANGLE",
+      "parentId": "1:18",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 40,
+        "height": 4,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#0D99FF",
+            "opacity": 1,
+            "visible": true,
+            "variableId": "VariableID:1:5"
+          }
+        ],
+        "strokes": []
+      }
+    },
+    "I1:18;1:10": {
+      "id": "I1:18;1:10",
+      "name": "Body",
+      "type": "TEXT",
+      "parentId": "1:18",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 180,
+        "height": 22.4,
+        "opacity": 1,
+        "rotation": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#000000",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": [],
+        "characters": "Body copy",
+        "typography": {
+          "fontFamily": "Inter",
+          "fontStyle": "Regular",
+          "lineHeight": "auto",
+          "letterSpacing": "0%",
+          "textCase": "ORIGINAL",
+          "textDecoration": "NONE",
+          "fontSize": 14
+        }
+      }
+    },
+    "I1:18;1:9": {
+      "id": "I1:18;1:9",
+      "name": "Title",
+      "type": "TEXT",
+      "parentId": "1:18",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 180,
+        "height": 25.6,
+        "opacity": 1,
+        "rotation": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#000000",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": [],
+        "characters": "Card title",
+        "typography": {
+          "fontFamily": "Inter",
+          "fontStyle": "Regular",
+          "lineHeight": "auto",
+          "letterSpacing": "0%",
+          "textCase": "ORIGINAL",
+          "textDecoration": "NONE",
+          "fontSize": 16
+        }
+      }
+    },
+    "1:14": {
+      "id": "1:14",
+      "name": "Card drifted",
+      "type": "INSTANCE",
+      "parentId": "1:3",
+      "childIds": [
+        "I1:14;1:9",
+        "I1:14;1:10",
+        "I1:14;1:11"
+      ],
+      "visible": true,
+      "props": {
+        "width": 240,
+        "height": 120,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 8,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#FF3B30",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": []
+      },
+      "instance": {
+        "mainComponentKey": "0820757e2ce8b8f0e5e00385acfb3605b243a122",
+        "mainComponentNodeId": "1:8",
+        "baselineAvailable": true,
+        "overrides": [
+          {
+            "nodeId": "1:14",
+            "fields": [
+              "fills",
+              "name"
+            ]
+          },
+          {
+            "nodeId": "I1:14;1:10",
+            "fields": [
+              "fontSize"
+            ]
+          },
+          {
+            "nodeId": "I1:14;1:11",
+            "fields": [
+              "visible"
+            ]
+          },
+          {
+            "nodeId": "I1:14;1:9",
+            "fields": [
+              "characters",
+              "styledTextSegments"
+            ]
+          }
+        ],
+        "componentProperties": {}
+      }
+    },
+    "I1:14;1:11": {
+      "id": "I1:14;1:11",
+      "name": "Accent",
+      "type": "RECTANGLE",
+      "parentId": "1:14",
+      "childIds": [],
+      "visible": false,
+      "props": {
+        "width": 40,
+        "height": 4,
+        "opacity": 1,
+        "rotation": 0,
+        "cornerRadius": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#0D99FF",
+            "opacity": 1,
+            "visible": true,
+            "variableId": "VariableID:1:5"
+          }
+        ],
+        "strokes": []
+      }
+    },
+    "I1:14;1:10": {
+      "id": "I1:14;1:10",
+      "name": "Body",
+      "type": "TEXT",
+      "parentId": "1:14",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 180,
+        "height": 22.4,
+        "opacity": 1,
+        "rotation": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#000000",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": [],
+        "characters": "Body copy",
+        "typography": {
+          "fontFamily": "Inter",
+          "fontStyle": "Regular",
+          "lineHeight": "auto",
+          "letterSpacing": "0%",
+          "textCase": "ORIGINAL",
+          "textDecoration": "NONE",
+          "fontSize": 18
+        }
+      }
+    },
+    "I1:14;1:9": {
+      "id": "I1:14;1:9",
+      "name": "Title",
+      "type": "TEXT",
+      "parentId": "1:14",
+      "childIds": [],
+      "visible": true,
+      "props": {
+        "width": 180,
+        "height": 25.6,
+        "opacity": 1,
+        "rotation": 0,
+        "strokeWeight": 1,
+        "fills": [
+          {
+            "kind": "solid",
+            "hex": "#000000",
+            "opacity": 1,
+            "visible": true,
+            "variableId": null
+          }
+        ],
+        "strokes": [],
+        "characters": "Changed title",
+        "typography": {
+          "fontFamily": "Inter",
+          "fontStyle": "Regular",
+          "lineHeight": "auto",
+          "letterSpacing": "0%",
+          "textCase": "ORIGINAL",
+          "textDecoration": "NONE",
+          "fontSize": 16
+        }
+      }
+    }
+  },
+  "components": {
+    "6d1604983bd3d43e9177375b1d4814dba8ce4f76": {
+      "key": "6d1604983bd3d43e9177375b1d4814dba8ce4f76",
+      "name": "Button",
+      "remote": false,
+      "nodeId": "1:12"
+    },
+    "0820757e2ce8b8f0e5e00385acfb3605b243a122": {
+      "key": "0820757e2ce8b8f0e5e00385acfb3605b243a122",
+      "name": "Card",
+      "remote": false,
+      "nodeId": "1:8"
+    }
+  },
+  "styles": {
+    "S:3b2f6aed101ddfdd21ec6815d529534b2953bab1,": {
+      "id": "S:3b2f6aed101ddfdd21ec6815d529534b2953bab1,",
+      "key": "3b2f6aed101ddfdd21ec6815d529534b2953bab1",
+      "name": "Type/Body",
+      "type": "TEXT",
+      "remote": false
+    },
+    "S:9ca95ada5956e2f81c886944b6e5057d9884f3fd,": {
+      "id": "S:9ca95ada5956e2f81c886944b6e5057d9884f3fd,",
+      "key": "9ca95ada5956e2f81c886944b6e5057d9884f3fd",
+      "name": "Scratch/Green",
+      "type": "PAINT",
+      "remote": false
+    }
+  },
+  "variables": {
+    "VariableID:1:5": {
+      "id": "VariableID:1:5",
+      "key": "b26660baa0856cef5ddbcbdf60578772de91df70",
+      "name": "colour/brand",
+      "resolvedType": "COLOR",
+      "collectionId": "VariableCollectionId:1:4",
+      "remote": false
+    },
+    "VariableID:1:46": {
+      "id": "VariableID:1:46",
+      "key": "42192496333a950eb0ec80b29de8ab378e3dc4ca",
+      "name": "type/subhead-size",
+      "resolvedType": "FLOAT",
+      "collectionId": "VariableCollectionId:1:4",
+      "remote": false
+    },
+    "VariableID:1:44": {
+      "id": "VariableID:1:44",
+      "key": "3fc292623c3f8d15b67edd8faa1f83a12af31520",
+      "name": "type/heading-tracking",
+      "resolvedType": "FLOAT",
+      "collectionId": "VariableCollectionId:1:4",
+      "remote": false
+    },
+    "VariableID:1:42": {
+      "id": "VariableID:1:42",
+      "key": "bb18871fa11806a9437bee875b55e864416e6274",
+      "name": "type/heading-size",
+      "resolvedType": "FLOAT",
+      "collectionId": "VariableCollectionId:1:4",
+      "remote": false
+    },
+    "VariableID:1:41": {
+      "id": "VariableID:1:41",
+      "key": "d98299b72fb482cc16874c24c3093c70609967f9",
+      "name": "type/style",
+      "resolvedType": "STRING",
+      "collectionId": "VariableCollectionId:1:4",
+      "remote": false
+    },
+    "VariableID:1:40": {
+      "id": "VariableID:1:40",
+      "key": "ea663d06cc042ca5bc33f30ffcd5300a09719afc",
+      "name": "type/family",
+      "resolvedType": "STRING",
+      "collectionId": "VariableCollectionId:1:4",
+      "remote": false
+    },
+    "VariableID:1:43": {
+      "id": "VariableID:1:43",
+      "key": "95088bbd6af9807e5a86ade9f0bd58ee09234314",
+      "name": "type/heading-line",
+      "resolvedType": "FLOAT",
+      "collectionId": "VariableCollectionId:1:4",
+      "remote": false
+    }
+  }
+}
