@@ -23,7 +23,8 @@ The claim above is what this repository has to earn. It is not earned yet.
 | --- | --- |
 | Traversal and snapshot recording | done |
 | Snapshot integrity checks | done |
-| Override drift detection | not started |
+| Override drift detection | done, not yet measured on a recorded fixture |
+| Accuracy harness and negative control | done |
 | Token drift detection | not started |
 | Detachment candidates | not started |
 | Severity scoring and export | not started |
@@ -31,8 +32,16 @@ The claim above is what this repository has to earn. It is not earned yet.
 | Figma Community listing | not started |
 
 Nothing in this README quotes a measured number yet, because none has been
-measured. When one appears here it will be recomputable from
-`evidence/results/`.
+measured against a real file. When one appears here it will be recomputable
+from `evidence/results/`.
+
+The accuracy harness does already run, against a fixture written by hand. On
+that fixture the override detector scores 1.00 precision and 1.00 recall, and
+the blunt control in `src/core/accuracy/blunt-control.ts` scores 0.33 and 0.83
+through the identical harness. That gap is the only reason the first pair of
+numbers means anything. It is not the published result: a snapshot written by
+hand can only contain the layer shapes whoever wrote it already thought of,
+which is why the artifact will come from a recorded file instead.
 
 ## How it works
 

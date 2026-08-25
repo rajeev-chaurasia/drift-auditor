@@ -56,14 +56,65 @@ rediscovered at every call site.
 
 ## Instance override drift
 
-Not implemented yet. Planned rules:
-
 Figma's `InstanceNode.overrides` reports which fields were overridden but not
 what they were overridden to, and it excludes overrides inherited from a parent
 instance. So the detector resolves each overridden node, addresses the matching
 node in the main component by **position** rather than by id, since an instance
 and its component share a structure but share no ids, and diffs the actual
 values.
+
+### The four rules that keep false positives at zero
+
+Each of these is a real thing Figma reports as an override that is not drift,
+and each has a test naming it.
+
+1. **A field a component property drives was configured, not drifted.** A
+   component author who exposes a text property is asking for it to be set, and
+   Figma records setting it exactly as it records a manual edit. The layer
+   carries `componentPropertyReferences` naming the property, and any override
+   of a referenced field is skipped.
+2. **An override set back to the component's value is not drift.** Figma keeps
+   reporting a field as overridden after it has been returned to its original
+   value. The override is real, the drift is not.
+3. **Editor and prototyping state is not drift.** The full list, with a reason
+   for each, is `IGNORED_FIELDS` in `src/core/detect/fields.ts`. Position
+   fields are in it because auto layout rewrites them on every reflow, which is
+   a real gap and is recorded in [known-misses.md](known-misses.md).
+4. **A structural mismatch produces no baseline rather than a wrong one.** When
+   the layer at the matching position in the component is a different type, the
+   two structures have diverged and the match is not trustworthy. The finding
+   is reported without a before-value.
+
+### Fields it reports but does not model
+
+Figma names roughly a hundred overridable fields. The snapshot models the ones
+an audit acts on. When an override names a field outside that set, the finding
+is still reported, with both values null and a note saying so. Dropping it
+would make the file look cleaner than it is, which is the failure this project
+exists to avoid.
+
+## Measuring it
+
+A detector is scored against a label set: drift cases somebody put into a Figma
+file deliberately, written down from the file rather than from detector output.
+A label set derived from what the detector found can only confirm what it
+already found, and measures nothing about recall.
+
+Labels address a layer by page and layer path, not by node id, so they can be
+written before the detector has ever been run. A label that resolves to no
+layer, or to more than one, fails the run rather than being skipped.
+
+### The negative control
+
+`src/core/accuracy/blunt-control.ts` is a deliberately naive detector: take
+everything in `InstanceNode.overrides` and report it. It is not a strawman, it
+is the obvious implementation, and it fails on all four rules above.
+
+It runs through the identical harness against the identical labels. On the hand
+authored fixture it scores 0.33 precision and 0.83 recall, against 1.00 and
+1.00 for the real detector. If the control ever scores as well as the detector,
+the fixture has stopped telling them apart and the accuracy number it produces
+is worthless, so that condition fails the run.
 
 ## Token drift
 
